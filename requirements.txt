@@ -1,0 +1,3 @@
+Faker # for random users
+Black # for code format check
+colorama # colored print
