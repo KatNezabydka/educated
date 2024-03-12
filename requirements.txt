@@ -1,4 +1,5 @@
 black
 colorama
 Faker
+prompt_toolkit
 
