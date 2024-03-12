@@ -2,6 +2,8 @@ from AddressBook import AddressBook
 from Record import Record
 from ValidationError import ValidationError
 
+from user_management import load_or_generate_users
+
 # lib imports
 from colorama import init, Fore, Style, Back
 
@@ -145,6 +147,17 @@ def main():
         + Back.WHITE
         + " for assistance."
     )
+
+    # Load or generate fake users
+    users_data = load_or_generate_users()
+
+    # Add fake users to the address book
+    for user in users_data:
+        fake_user = Record(user["name"])
+        fake_user.add_phone(user["phone"])
+        fake_user.add_birthday(user["birthday"])
+        book.add_record(fake_user)
+
     while True:
         user_input = input(Fore.MAGENTA + "Enter a command: ")
         command, *args = parse_input(user_input)
