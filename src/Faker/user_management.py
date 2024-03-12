@@ -20,7 +20,7 @@ def generate_fake_user():
         return []
 
 
-def generate_fake_users(count=25):
+def generate_fake_users(count=10):
     return [generate_fake_user() for _ in range(count)]
 
 
@@ -42,7 +42,7 @@ def save_users(users_data, filename="users_data.json"):
 
 def load_or_generate_users():
     try:
-        with open("../../src/users_data.json", "r") as file:
+        with open("users_data.json", "r") as file:
             print(f"!!! Loading users from the file: users_data.json !!!")
             users_data = json.load(file)
     except FileNotFoundError:

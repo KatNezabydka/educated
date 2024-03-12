@@ -1,7 +1,7 @@
 from AddressBook import AddressBook
 from Record import Record
 from ValidationError import ValidationError
-from Faker.user_management import load_or_generate_users
+from Faker.user_management import load_or_generate_users, save_users
 from colorama import init, Fore, Style, Back
 
 ERROR_MESSAGES = {
@@ -181,6 +181,7 @@ def main():
             case "birthdays":
                 birthdays(book)
             case _ if command in commands_to_close:
+                save_users(book.export(), filename="users_data.json")
                 print(Fore.GREEN + "Good bye! 😊")
                 break
             case _:

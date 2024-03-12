@@ -14,6 +14,23 @@ class AddressBook(UserDict):
     def find(self, name: str) -> Record | None:
         return self.data.get(name, None)
 
+    def export(self) -> list:
+        existing_data = []
+        default_data = datetime.today()
+        for record in self.data.values():
+            existing_data.append(
+                {
+                    "name": record.name.value,
+                    "phone": record.phones[0].value if record.phones else None,
+                    "birthday": (
+                        record.birthday.value.strftime("%d.%m.%Y")
+                        if record.birthday
+                        else None
+                    ),
+                }
+            )
+        return existing_data
+
     def get_birthdays_per_week(self) -> dict:
         today = datetime.now()
         start_day = today + timedelta(days=1)
