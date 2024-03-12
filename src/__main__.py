@@ -1,10 +1,7 @@
 from AddressBook import AddressBook
 from Record import Record
 from ValidationError import ValidationError
-
-from user_management import load_or_generate_users
-
-# lib imports
+from Faker.user_management import load_or_generate_users
 from colorama import init, Fore, Style, Back
 
 ERROR_MESSAGES = {
@@ -34,7 +31,9 @@ def input_error(func):
 
 
 def show_help():
-    # Print available commands with color highlighting
+    """
+    Print available commands with color highlighting
+    """
     print("*" * 30 + " < HELP MENU START > " + "*" * 30)
     print(Fore.MAGENTA + Style.BRIGHT + "Available commands:")
     print(Fore.GREEN + "--> hello: Get a greeting from the bot.")
@@ -50,7 +49,7 @@ def show_help():
         Fore.YELLOW
         + "--> phone [name]: Show the phone number for the specified contact."
     )
-    print(Fore.YELLOW + "--> all: Show all contacts in the address book.")
+    print(Fore.YELLOW + "--> show_all: Show all contacts in the address book.")
     print(
         Fore.YELLOW
         + "--> add-birthday [name] [birthday]: Add a birthday for the specified contact."
@@ -159,7 +158,7 @@ def main():
         book.add_record(fake_user)
 
     while True:
-        user_input = input(Fore.MAGENTA + "Enter a command: ")
+        user_input = input(Fore.MAGENTA + "Enter a command:" + Style.RESET_ALL)
         command, *args = parse_input(user_input)
 
         match command:

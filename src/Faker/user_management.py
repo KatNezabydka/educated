@@ -1,7 +1,6 @@
 from faker import Faker
 import json
 import re
-from datetime import datetime
 
 fake = Faker()
 
