@@ -2,6 +2,7 @@
 from AddressBook import AddressBook
 from Record import Record
 from ValidationError import ValidationError
+from NoteBook import NoteBook
 
 ERROR_MESSAGES = {
     ValueError: "Give me name and phone/birthday please.",
@@ -85,8 +86,52 @@ def birthdays(book: AddressBook) -> print:
         if names:
             print(f"{day}: {', '.join(names)}")
 
+
+@input_error
+def add_note(args: list, note_book: NoteBook) -> str:
+    name = args[0]
+    tag = args[1]
+    content = ' '.join(args[2:])
+    note_book.add_note(name, tag, content)
+    return "Note added."
+
+
+@input_error
+def edit_note_content(args: list, note_book: NoteBook) -> str:
+    name = args[0]
+    new_content = ' '.join(args[1:])
+    note_book.edit_note_content(name, new_content)
+    return "Note content updated."
+
+
+@input_error
+def edit_note_tag(args: list, note_book: NoteBook) -> str:
+    name, new_tag = args
+    note_book.edit_note_tag(name, new_tag)
+    return "Note tag updated."
+
+
+@input_error
+def delete_note(args: list, note_book: NoteBook) -> str:
+    name = args[0]
+    note_book.delete_note(name)
+    return "Note deleted."
+
+
+@input_error
+def show_note_by_name(args: list, note_book: NoteBook) -> str:
+    name = args[0]
+    return note_book.show_by_name(name)
+
+
+@input_error
+def show_all_notes_sorted_by_name(note_book: NoteBook) -> str:
+    return note_book.show_all_sorted_by_name()
+
+
 def main():
     book = AddressBook()
+    note_book = NoteBook()
     commands_to_close = ["close", "exit"]
     print("Welcome to the assistant bot!")
     while True:
@@ -110,6 +155,16 @@ def main():
                 print(show_birthday(args, book))
             case "birthdays":
                 birthdays(book)
+            case "add-note":
+                print(add_note(args, note_book))
+            case "edit-note-content":
+                print(edit_note_content(args, note_book))
+            case "delete-note":
+                print(delete_note(args, note_book))
+            case "show-note":
+                print(show_note_by_name(args, note_book))
+            case "show-all-notes":
+                print(show_all_notes_sorted_by_name(note_book))
             case _ if command in commands_to_close:
                 print("Good bye!")
                 break
