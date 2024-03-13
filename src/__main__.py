@@ -197,6 +197,17 @@ def show_all_notes_sorted_by_name(note_book: NoteBook) -> str:
     return note_book.show_all_sorted_by_name()
 
 
+@input_error
+def show_notes_by_tag(args: list, note_book: NoteBook) -> str:
+    tag = args[0]
+    return note_book.show_by_tag(tag)
+
+
+@input_error
+def show_all_notes_sorted_by_tag(note_book: NoteBook) -> str:
+    return note_book.show_all_sorted_by_tag()
+
+
 def main():
     # Initialize colorama for color support in the console
     init(autoreset=True)
@@ -261,6 +272,10 @@ def main():
                 print(show_note_by_name(args, note_book))
             case "show-all-notes":
                 print(show_all_notes_sorted_by_name(note_book))
+            case "show-notes-tag":
+                print(show_notes_by_tag(args, note_book))
+            case "show-all-notes-tag":
+                print(show_all_notes_sorted_by_tag(note_book))
             case _ if command in commands_to_close:
                 save_users(book.export(), filename="users_data.json")
                 print(Fore.GREEN + "Good bye! 😊")
