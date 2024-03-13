@@ -4,30 +4,16 @@ from ValidationError import ValidationError
 from NoteBook import NoteBook
 from Faker.user_management import load_or_generate_users, save_users
 from colorama import init, Fore, Style, Back
-
-"""
-Autocompletion for commands
-"""
 from prompt_toolkit import prompt
-from prompt_toolkit.completion import WordCompleter
+from CustomCompleter.CustomCompleter import CustomCompleter, custom_style
 
-# List of available commands
-commands = [
-    "help",
-    "hello",
-    "add",
-    "change",
-    "phone",
-    "show_all",
-    "add-birthday",
-    "show-birthday",
-    "birthdays",
-    "close",
-    "exit",
-]
+completer = CustomCompleter()
 
-# Creating a completer for commands
-completer = WordCompleter(commands)
+
+def prompt_with_completion():
+    text = prompt("Enter a command: ", style=custom_style, completer=completer)
+    return text
+
 
 ERROR_MESSAGES = {
     ValueError: f"{Fore.YELLOW} Give me name and phone/birthday please.",
@@ -159,7 +145,7 @@ def birthdays(book: AddressBook) -> print:
 def add_note(args: list, note_book: NoteBook) -> str:
     name = args[0]
     tag = args[1]
-    content = ' '.join(args[2:])
+    content = " ".join(args[2:])
     note_book.add_note(name, tag, content)
     return "Note added."
 
@@ -167,7 +153,7 @@ def add_note(args: list, note_book: NoteBook) -> str:
 @input_error
 def edit_note_content(args: list, note_book: NoteBook) -> str:
     name = args[0]
-    new_content = ' '.join(args[1:])
+    new_content = " ".join(args[1:])
     note_book.edit_note_content(name, new_content)
     return "Note content updated."
 
@@ -195,6 +181,17 @@ def show_note_by_name(args: list, note_book: NoteBook) -> str:
 @input_error
 def show_all_notes_sorted_by_name(note_book: NoteBook) -> str:
     return note_book.show_all_sorted_by_name()
+
+
+@input_error
+def show_notes_by_tag(args: list, note_book: NoteBook) -> str:
+    tag = args[0]
+    return note_book.show_by_tag(tag)
+
+
+@input_error
+def show_all_notes_sorted_by_tag(note_book: NoteBook) -> str:
+    return note_book.show_all_sorted_by_tag()
 
 
 def main():
@@ -229,7 +226,7 @@ def main():
         """
         Running the console with autocompletion
         """
-        user_input = prompt(" Enter a command: ", completer=completer)
+        user_input = prompt_with_completion()
         command, *args = parse_input(user_input)
 
         match command:
@@ -261,6 +258,10 @@ def main():
                 print(show_note_by_name(args, note_book))
             case "show-all-notes":
                 print(show_all_notes_sorted_by_name(note_book))
+            case "show-notes-tag":
+                print(show_notes_by_tag(args, note_book))
+            case "show-all-notes-tag":
+                print(show_all_notes_sorted_by_tag(note_book))
             case _ if command in commands_to_close:
                 save_users(book.export(), filename="users_data.json")
                 print(Fore.GREEN + "Good bye! 😊")
