@@ -74,6 +74,7 @@ python __main__.py
 - **[Black](https://github.com/psf/black)**: A Python code formatter.
 - **[Colorama](https://github.com/tartley/colorama)**: Cross-platform colored terminal text.
 - **[Faker](https://github.com/joke2k/faker)**: Fake data generator for Python.
+- **[Prompt-toolkit](https://github.com/prompt-toolkit/python-prompt-toolkit)**: Building powerful interactive command line applications
 
 
 # Chat Bot

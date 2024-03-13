@@ -3,30 +3,16 @@ from Record import Record
 from ValidationError import ValidationError
 from Faker.user_management import load_or_generate_users, save_users
 from colorama import init, Fore, Style, Back
-
-"""
-Autocompletion for commands
-"""
 from prompt_toolkit import prompt
-from prompt_toolkit.completion import WordCompleter
+from CustomCompleter.CustomCompleter import CustomCompleter, custom_style
 
-# List of available commands
-commands = [
-    "help",
-    "hello",
-    "add",
-    "change",
-    "phone",
-    "show_all",
-    "add-birthday",
-    "show-birthday",
-    "birthdays",
-    "close",
-    "exit",
-]
+completer = CustomCompleter()
 
-# Creating a completer for commands
-completer = WordCompleter(commands)
+
+def prompt_with_completion():
+    text = prompt("Enter a command: ", style=custom_style, completer=completer)
+    return text
+
 
 ERROR_MESSAGES = {
     ValueError: f"{Fore.YELLOW} Give me name and phone/birthday please.",
@@ -185,7 +171,7 @@ def main():
         """
         Running the console with autocompletion
         """
-        user_input = prompt(" Enter a command: ", completer=completer)
+        user_input = prompt_with_completion()
         command, *args = parse_input(user_input)
 
         match command:
