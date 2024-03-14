@@ -242,7 +242,8 @@ def main():
     for user in users_data:
         fake_user = Record(user["name"])
         fake_user.add_phone(user["phone"])
-        fake_user.add_birthday(user["birthday"])
+        if user["birthday"] is not None:
+            fake_user.add_birthday(user["birthday"])
         book.add_record(fake_user)
 
     while True:
