@@ -5,6 +5,7 @@ from NoteBook import NoteBook
 from Faker.user_management import load_or_generate_users, save_users
 from colorama import init, Fore, Style, Back
 from prompt_toolkit import prompt
+from datetime import datetime, timedelta
 from CustomCompleter.CustomCompleter import CustomCompleter, custom_style
 
 completer = CustomCompleter()
@@ -60,7 +61,7 @@ def show_help():
         Fore.YELLOW
         + "--> phone [name]: Show the phone number for the specified contact."
     )
-    print(Fore.YELLOW + "--> show_all: Show all contacts in the address book.")
+    print(Fore.YELLOW + "--> show-all: Show all contacts in the address book.")
     print(
         Fore.YELLOW
         + "--> add-birthday [name] [birthday]: Add a birthday for the specified contact."
@@ -134,7 +135,8 @@ def show_all(book: AddressBook) -> print:
     if len(book.data) == 0:
         print(Fore.RED + "The list is empty" + " ¯\\_(ツ)_/¯")
     for name, record in book.data.items():
-        print(f"👤 {name}. {record.print_phones()} {record.print_emails()} {record.print_addresses()}")
+        print(
+            f"👤 {name}. {record.print_birthday()} {record.print_phones()} {record.print_emails()} {record.print_addresses()}")
 
 
 @input_error
@@ -154,6 +156,32 @@ def show_birthday(args: list, book: AddressBook) -> str:
     if record is not None and record.has_birthday() is not False:
         return record.show_birthday()
     return f"{Fore.YELLOW} Contact not found or birthday is empty"
+
+
+@input_error
+def show_birthdays_within_days(args, book: AddressBook):
+    days = int(args[0])
+    today = datetime.now()
+    end_date = today + timedelta(days=days)
+
+    birthdays_within_days = {}
+    for name, contact in book.items():
+        birthday = datetime.strptime(
+            str(contact.birthday), '%Y-%m-%d %H:%M:%S')
+
+        birthday_this_year = birthday.replace(year=today.year)
+
+        if birthday_this_year < today:
+            birthday_this_year = birthday.replace(year=today.year+1)
+
+        if today <= birthday_this_year <= end_date:
+
+            if birthday_this_year.date() not in birthdays_within_days:
+                birthdays_within_days[birthday_this_year.date()] = []
+            birthdays_within_days[birthday_this_year.date()].append(name)
+
+    for birthday_this_year, names in sorted(birthdays_within_days.items()):
+        print(f"{birthday_this_year.strftime('%d.%m.%Y')} - {', '.join(names)}")
 
 
 def birthdays(book: AddressBook) -> print:
@@ -267,12 +295,14 @@ def main():
                 print(change_contact(args, book))
             case "phone":
                 print(show_phone(args, book))
-            case "show_all":
+            case "show-all":
                 show_all(book)
             case "add-birthday":
                 print(add_birthday(args, book))
             case "show-birthday":
-                print(show_birthday(args, book))
+                show_birthday(args, book)
+            case "show-all-birthdays":
+                show_birthdays_within_days(args, book)
             case "birthdays":
                 birthdays(book)
             case "add-note":
