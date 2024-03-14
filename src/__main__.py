@@ -49,10 +49,18 @@ def show_help():
     """
     print("*" * 30 + " < HELP MENU START > " + "*" * 30)
     print(Fore.MAGENTA + Style.BRIGHT + "Available commands:")
-    print(Fore.GREEN + "--> hello: Get a greeting from the bot.")
+    print(Fore.YELLOW + "--> hello: Get a greeting from the bot.")
     print(
         Fore.YELLOW
         + "--> add [name] [phone]: Add a new contact with the name and phone number."
+    )
+    print(
+        Fore.YELLOW
+        + "--> add-address [name] [address]: Add an address for the specified contact."
+    )
+    print(
+        Fore.YELLOW
+        + "--> add-email [name] [email]: Add an email address for the specified contact."
     )
     print(
         Fore.YELLOW
@@ -71,7 +79,39 @@ def show_help():
         Fore.YELLOW
         + "--> show-birthday [name]: Show the birthday for the specified contact."
     )
+    print(
+        Fore.YELLOW
+        + "--> show-all-birthdays [days]: Show birthdays happening within the specified number of days."
+    )
     print(Fore.YELLOW + "--> birthdays: Show birthdays happening within the next week.")
+    print(
+        Fore.YELLOW
+        + "--> add-note [note]: Add a note to the note book."
+    )
+    print(
+        Fore.YELLOW
+        + "--> edit-note-content [note_id] [new_content]: Edit the content of a note."
+    )
+    print(
+        Fore.YELLOW
+        + "--> delete-note [note_id]: Delete a note from the note book."
+    )
+    print(
+        Fore.YELLOW
+        + "--> show-note [note_id]: Show the content of a note by its ID."
+    )
+    print(
+        Fore.YELLOW
+        + "--> show-all-notes: Show all notes in the note book, sorted by name."
+    )
+    print(
+        Fore.YELLOW
+        + "--> show-notes-tag [tag]: Show notes in the note book by tag."
+    )
+    print(
+        Fore.YELLOW
+        + "--> show-all-notes-tag: Show all notes in the note book, sorted by tag."
+    )
     print(Fore.RED + "--> close or exit: Close the program.")
     print("*" * 30 + " < HELP MENU END > " + "*" * 30)
     print(Style.RESET_ALL)  # Reset colors
@@ -190,9 +230,6 @@ def show_birthdays_within_days(args, book: AddressBook):
             birthdays_within_days[birthday_this_year.date()].append(
                 (name, days_until_str))
 
-    # for birthday_this_year, names in sorted(birthdays_within_days.items()):
-    #     for name, days_until_str in names:
-    #         print(f"{Fore.BLUE}📅{birthday_this_year.strftime('%d.%m.%Y')} {days_until_str} - {Fore.GREEN}👤{name}")
     birthdays_grouped = defaultdict(list)
     for birthday, names in birthdays_within_days.items():
         for name, days_until_str in names:
@@ -200,8 +237,8 @@ def show_birthdays_within_days(args, book: AddressBook):
 
     for (birthday, days_until_str), names in sorted(birthdays_grouped.items()):
         names_str = ", ".join([f"👤{name}" for name in names])
-        print(f"{Fore.BLUE}📅{birthday.strftime('%d.%m.%Y')} {days_until_str} - {Fore.GREEN}{names_str}")
-
+        print(
+            f"{Fore.BLUE}📅{birthday.strftime('%d.%m.%Y')} {days_until_str} - {Fore.GREEN}{names_str}")
 
 
 def birthdays(book: AddressBook) -> print:
