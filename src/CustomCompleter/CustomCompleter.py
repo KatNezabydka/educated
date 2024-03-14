@@ -15,6 +15,8 @@ class CustomCompleter(Completer):
     def __init__(self):
         self.completions = [
             "add",
+            "add-address",
+            "add-email",
             "change",
             "phone",
             "show_all",

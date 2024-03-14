@@ -85,6 +85,8 @@ This chat bot provides functionality to manage an address book. It offers the fo
 
 - ``hello``: Get a greeting from the bot.
 - ``add [name] [phone]``: Add a new contact with the name and phone number.
+- ``add-address [name] [address]``: Add an address for the specified contact.
+- ``add-email [name] [email]``: Add an email address for the specified contact.
 - ``change [name] [new phone]``: Change the phone number for the specified contact.
 - ``phone [name]``: Show the phone number for the specified contact.
 - ``show_all``: Show all contacts in the address book.
