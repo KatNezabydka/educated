@@ -93,6 +93,7 @@ This chat bot provides functionality to manage an address book. It offers the fo
 - ``show-all``: Shows all contacts in the address book.
 - ``add-birthday [name] [birthday]``: Adds a birthday for the specified contact.
 - ``show-birthday [name]``: Shows the birthday for the specified contact.
+- ``show-all-birthdays [days]``: Shows birthdays happening within the specified number of days.
 - ``birthdays``: Shows birthdays happening within the next week.
 - ``add-note [note]``: Adds a new note to the notebook.
 - ``edit-note-content [note_id] [new_content]``: Edits the content of the note with the specified ID.
