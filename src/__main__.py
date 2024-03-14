@@ -90,7 +90,21 @@ def add_contact(args: list, book: AddressBook) -> str:
         return f"{Fore.GREEN} ✅ Contact added."
     return f"{Fore.YELLOW} Contact already exist."
 
-
+@input_error
+def find_contact(args: list, book: AddressBook) -> str:
+    name, phone, email, address = args
+    record = book.find(name)
+    if record:
+        if email:
+            record.add_email(email)
+        if address:
+            record.add_address(address)
+        if phone:
+            record.add_phone(phone)
+        return f"{Fore.GREEN} ✅ Contact updated."
+    return f"{Fore.YELLOW} The contact does not exist, use the 'add' command to create it."
+    
+    
 @input_error
 def add_email(args: list, book: AddressBook) -> str:
     name, email = args
@@ -267,6 +281,8 @@ def main():
                 print(change_contact(args, book))
             case "phone":
                 print(show_phone(args, book))
+            case "find-contact":
+                print(find_contact(args, book))
             case "show_all":
                 show_all(book)
             case "add-birthday":
