@@ -83,17 +83,25 @@ python __main__.py
 
 This chat bot provides functionality to manage an address book. It offers the following commands:
 
-- ``hello``: Get a greeting from the bot.
-- ``add [name] [phone]``: Add a new contact with the name and phone number.
-- ``add-address [name] [address]``: Add an address for the specified contact.
-- ``add-email [name] [email]``: Add an email address for the specified contact.
-- ``change [name] [new phone]``: Change the phone number for the specified contact.
-- ``phone [name]``: Show the phone number for the specified contact.
-- ``show_all``: Show all contacts in the address book.
-- ``add-birthday [name] [birthday]``: Add a birthday for the specified contact.
-- ``show-birthday [name]``: Show the birthday for the specified contact.
-- ``birthdays``: Show birthdays happening within the next week.
-- ``close`` or ``exit``: Close the program.
+- ``help``: Calls the `show_help()` function, which displays usage help for the program.
+- ``hello``: Prints a greeting message.
+- ``add [name] [phone]``: Adds a new contact with the specified name and phone number.
+- ``add-address [name] [address]``: Adds an address for the specified contact.
+- ``add-email [name] [email]``: Adds an email address for the specified contact.
+- ``change [name] [new phone]``: Changes the phone number for the specified contact.
+- ``phone [name]``: Shows the phone number for the specified contact.
+- ``show_all``: Shows all contacts in the address book.
+- ``add-birthday [name] [birthday]``: Adds a birthday for the specified contact.
+- ``show-birthday [name]``: Shows the birthday for the specified contact.
+- ``birthdays``: Shows birthdays happening within the next week.
+- ``add-note [note]``: Adds a new note to the notebook.
+- ``edit-note-content [note_id] [new_content]``: Edits the content of the note with the specified ID.
+- ``delete-note [note_id]``: Deletes the note with the specified ID.
+- ``show-note [note_id]``: Shows the note with the specified ID.
+- ``show-all-notes``: Shows all notes, sorted by name.
+- ``show-notes-tag [tag]``: Shows notes with the specified tag.
+- ``show-all-notes-tag``: Shows all notes, sorted by tags.
+- ``close`` or ``exit``: Closes the program, saving data before exiting.
 
 The chat bot supports color highlighting for commands and error messages for user convenience.
 

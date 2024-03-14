@@ -14,6 +14,8 @@ custom_style = StylePrompt.from_dict(
 class CustomCompleter(Completer):
     def __init__(self):
         self.completions = [
+            "help",
+            "hello",
             "add",
             "add-address",
             "add-email",
@@ -23,8 +25,13 @@ class CustomCompleter(Completer):
             "add-birthday",
             "show-birthday",
             "birthdays",
-            "close",
-            "exit",
+            "add-note",
+            "edit-note-content",
+            "delete-note",
+            "show-note",
+            "show-all-notes",
+            "show-notes-tag",
+            "show-all-notes-tag",
         ]
 
     def get_completions(self, document, complete_event):
