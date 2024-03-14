@@ -87,8 +87,31 @@ def add_contact(args: list, book: AddressBook) -> str:
     name, phone = args
     if book.find(name) is None:
         book.add_record(Record(name).add_phone(phone))
-        return f"{Fore.GREEN} Contact added."
+        return f"{Fore.GREEN} ✅ Contact added."
     return f"{Fore.YELLOW} Contact already exist."
+
+
+@input_error
+def add_email(args: list, book: AddressBook) -> str:
+    name, email = args
+    record = book.find(name)
+    if record:
+        record.add_email(email)
+        book.add_record(record)
+        return f"{Fore.GREEN} ✅ Email added."
+    return f"{Fore.YELLOW} The contact does not exist, use the 'add' command to create it."
+
+
+@input_error
+def add_address(args: list, book: AddressBook) -> str:
+    name = args[0]
+    address = ' '.join(map(str, args[1:]))
+    record = book.find(name)
+    if record:
+        record.add_address(address)
+        book.add_record(record)
+        return f"{Fore.GREEN} ✅ Address added."
+    return f"{Fore.YELLOW} The contact does not exist, use the 'add' command to create it."
 
 
 @input_error
@@ -111,7 +134,7 @@ def show_all(book: AddressBook) -> print:
     if len(book.data) == 0:
         print(Fore.RED + "The list is empty" + " ¯\\_(ツ)_/¯")
     for name, record in book.data.items():
-        print(f"{name}. {record.print_phones()}")
+        print(f"👤 {name}. {record.print_phones()} {record.print_emails()} {record.print_addresses()}")
 
 
 @input_error
@@ -120,7 +143,7 @@ def add_birthday(args: list, book: AddressBook) -> str:
     record = book.find(name)
     if record is not None and record.has_birthday() is False:
         record.add_birthday(birthday)
-        return f"{Fore.GREEN} Birthday added."
+        return f"{Fore.GREEN} ✅ Birthday added."
     return f"{Fore.YELLOW} Contact not found or birthday already exist."
 
 
@@ -147,7 +170,7 @@ def add_note(args: list, note_book: NoteBook) -> str:
     tag = args[1]
     content = " ".join(args[2:])
     note_book.add_note(name, tag, content)
-    return "Note added."
+    return "✅ Note added."
 
 
 @input_error
@@ -236,6 +259,10 @@ def main():
                 print(Fore.CYAN + "How can I help you? 😊")
             case "add":
                 print(add_contact(args, book))
+            case "add-address":
+                print(add_address(args, book))
+            case "add-email":
+                print(add_email(args, book))
             case "change":
                 print(change_contact(args, book))
             case "phone":
