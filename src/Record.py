@@ -89,15 +89,17 @@ class Record:
         if not self.addresses:
             return ""
         else:
-            return f"🏘 address: {'; '.join(address.value for address in self.addresses)}"
+            return (
+                f"🏘 address: {'; '.join(address.value for address in self.addresses)}"
+            )
 
     def print_birthday(self) -> str:
-        return f"🎂 birthday: {self.birthday.value.strftime("%d.%m.%Y")}"
+        return f"🎂 birthday: {self.birthday.value.strftime('%d.%m.%Y')}"
 
     def add_birthday(self, birthday) -> "Record":
         self.birthday = Birthday(birthday)
         return self
-    
+
     def get_birthday(self) -> "Record":
         return self.birthday
 
