@@ -84,30 +84,20 @@ def show_help():
         + "--> show-all-birthdays [days]: Show birthdays happening within the specified number of days."
     )
     print(Fore.YELLOW + "--> birthdays: Show birthdays happening within the next week.")
-    print(
-        Fore.YELLOW
-        + "--> add-note [note]: Add a note to the note book."
-    )
+    print(Fore.YELLOW + "--> add-note [note]: Add a note to the note book.")
     print(
         Fore.YELLOW
         + "--> edit-note-content [note_id] [new_content]: Edit the content of a note."
     )
+    print(Fore.YELLOW + "--> delete-note [note_id]: Delete a note from the note book.")
     print(
-        Fore.YELLOW
-        + "--> delete-note [note_id]: Delete a note from the note book."
-    )
-    print(
-        Fore.YELLOW
-        + "--> show-note [note_id]: Show the content of a note by its ID."
+        Fore.YELLOW + "--> show-note [note_id]: Show the content of a note by its ID."
     )
     print(
         Fore.YELLOW
         + "--> show-all-notes: Show all notes in the note book, sorted by name."
     )
-    print(
-        Fore.YELLOW
-        + "--> show-notes-tag [tag]: Show notes in the note book by tag."
-    )
+    print(Fore.YELLOW + "--> show-notes-tag [tag]: Show notes in the note book by tag.")
     print(
         Fore.YELLOW
         + "--> show-all-notes-tag: Show all notes in the note book, sorted by tag."
@@ -141,19 +131,23 @@ def add_email(args: list, book: AddressBook) -> str:
         record.add_email(email)
         book.add_record(record)
         return f"{Fore.GREEN} ✅ Email added."
-    return f"{Fore.YELLOW} The contact does not exist, use the 'add' command to create it."
+    return (
+        f"{Fore.YELLOW} The contact does not exist, use the 'add' command to create it."
+    )
 
 
 @input_error
 def add_address(args: list, book: AddressBook) -> str:
     name = args[0]
-    address = ' '.join(map(str, args[1:]))
+    address = " ".join(map(str, args[1:]))
     record = book.find(name)
     if record:
         record.add_address(address)
         book.add_record(record)
         return f"{Fore.GREEN} ✅ Address added."
-    return f"{Fore.YELLOW} The contact does not exist, use the 'add' command to create it."
+    return (
+        f"{Fore.YELLOW} The contact does not exist, use the 'add' command to create it."
+    )
 
 
 @input_error
@@ -177,7 +171,8 @@ def show_all(book: AddressBook) -> print:
         print(Fore.RED + "The list is empty" + " ¯\\_(ツ)_/¯")
     for name, record in book.data.items():
         print(
-            f"👤 {name}. {record.print_birthday()} {record.print_phones()} {record.print_emails()} {record.print_addresses()}")
+            f"👤 {name}. {record.print_birthday()} {record.print_phones()} {record.print_emails()} {record.print_addresses()}"
+        )
 
 
 @input_error
@@ -207,13 +202,12 @@ def show_birthdays_within_days(args, book: AddressBook):
 
     birthdays_within_days = {}
     for name, contact in book.items():
-        birthday = datetime.strptime(
-            str(contact.birthday), '%Y-%m-%d %H:%M:%S')
+        birthday = datetime.strptime(str(contact.birthday), "%Y-%m-%d %H:%M:%S")
 
         birthday_this_year = birthday.replace(year=today.year)
 
         if birthday_this_year < today:
-            birthday_this_year = birthday.replace(year=today.year+1)
+            birthday_this_year = birthday.replace(year=today.year + 1)
 
         if today <= birthday_this_year <= end_date:
             days_until_birthday = (birthday_this_year - today).days
@@ -228,7 +222,8 @@ def show_birthdays_within_days(args, book: AddressBook):
             if birthday_this_year.date() not in birthdays_within_days:
                 birthdays_within_days[birthday_this_year.date()] = []
             birthdays_within_days[birthday_this_year.date()].append(
-                (name, days_until_str))
+                (name, days_until_str)
+            )
 
     birthdays_grouped = defaultdict(list)
     for birthday, names in birthdays_within_days.items():
@@ -238,7 +233,8 @@ def show_birthdays_within_days(args, book: AddressBook):
     for (birthday, days_until_str), names in sorted(birthdays_grouped.items()):
         names_str = ", ".join([f"👤{name}" for name in names])
         print(
-            f"{Fore.BLUE}📅{birthday.strftime('%d.%m.%Y')} {days_until_str} - {Fore.GREEN}{names_str}")
+            f"{Fore.BLUE}📅{birthday.strftime('%d.%m.%Y')} {days_until_str} - {Fore.GREEN}{names_str}"
+        )
 
 
 def birthdays(book: AddressBook) -> print:
