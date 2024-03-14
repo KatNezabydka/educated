@@ -1,3 +1,4 @@
+from collections import defaultdict
 from AddressBook import AddressBook
 from Record import Record
 from ValidationError import ValidationError
@@ -175,13 +176,32 @@ def show_birthdays_within_days(args, book: AddressBook):
             birthday_this_year = birthday.replace(year=today.year+1)
 
         if today <= birthday_this_year <= end_date:
+            days_until_birthday = (birthday_this_year - today).days
+
+            if days_until_birthday == 0:
+                days_until_str = "(today)"
+            elif days_until_birthday == 1:
+                days_until_str = "(tomorrow)"
+            else:
+                days_until_str = f"(in {days_until_birthday} days)"
 
             if birthday_this_year.date() not in birthdays_within_days:
                 birthdays_within_days[birthday_this_year.date()] = []
-            birthdays_within_days[birthday_this_year.date()].append(name)
+            birthdays_within_days[birthday_this_year.date()].append(
+                (name, days_until_str))
 
-    for birthday_this_year, names in sorted(birthdays_within_days.items()):
-        print(f"{birthday_this_year.strftime('%d.%m.%Y')} - {', '.join(names)}")
+    # for birthday_this_year, names in sorted(birthdays_within_days.items()):
+    #     for name, days_until_str in names:
+    #         print(f"{Fore.BLUE}📅{birthday_this_year.strftime('%d.%m.%Y')} {days_until_str} - {Fore.GREEN}👤{name}")
+    birthdays_grouped = defaultdict(list)
+    for birthday, names in birthdays_within_days.items():
+        for name, days_until_str in names:
+            birthdays_grouped[(birthday, days_until_str)].append(name)
+
+    for (birthday, days_until_str), names in sorted(birthdays_grouped.items()):
+        names_str = ", ".join([f"👤{name}" for name in names])
+        print(f"{Fore.BLUE}📅{birthday.strftime('%d.%m.%Y')} {days_until_str} - {Fore.GREEN}{names_str}")
+
 
 
 def birthdays(book: AddressBook) -> print:
