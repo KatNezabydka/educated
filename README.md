@@ -90,7 +90,7 @@ This chat bot provides functionality to manage an address book. It offers the fo
 - ``add-email [name] [email]``: Adds an email address for the specified contact.
 - ``change [name] [new phone]``: Changes the phone number for the specified contact.
 - ``phone [name]``: Shows the phone number for the specified contact.
-- ``show_all``: Shows all contacts in the address book.
+- ``show-all``: Shows all contacts in the address book.
 - ``add-birthday [name] [birthday]``: Adds a birthday for the specified contact.
 - ``show-birthday [name]``: Shows the birthday for the specified contact.
 - ``birthdays``: Shows birthdays happening within the next week.
