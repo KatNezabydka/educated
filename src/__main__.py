@@ -618,7 +618,7 @@ def main():
     notes_data = load_or_generate_notes()
     # Add notes to the notebook
     for note in notes_data:
-        note_book.add_note(note)
+        note_book.add_note(Note(note["name"], note["tag"], note["content"]))
 
     while True:
         """

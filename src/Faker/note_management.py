@@ -8,11 +8,11 @@ fake = Faker()
 
 def generate_fake_note():
     try:
-        return Note(
-            name=fake.name().split()[0],
-            tag=fake.word().lower(),
-            content=fake.text(max_nb_chars=300)
-        )
+        return {
+            "name": fake.name().split()[0],
+            "tag": fake.word().lower(),
+            "content": fake.text(max_nb_chars=300)
+        }
     except Exception as e:
         print(f"Error generating fake note: {e}")
         return None
@@ -41,7 +41,7 @@ def save_notes(notes_data, filename="notes_data.json"):
     try:
         with open(filename, "w") as file:
             # Serialize note objects to JSON
-            json.dump([note.__dict__ for note in notes_data], file, indent=4)
+            json.dump(notes_data, file, indent=4)
         print("Notes data saved successfully.")
     except Exception as e:
         print(f"Error saving notes data: {e}")
