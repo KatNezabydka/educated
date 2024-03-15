@@ -448,7 +448,7 @@ def add_note(args: list, note_book: NoteBook) -> str:
     name = args[0]
     tag = args[1]
     content = " ".join(args[2:])
-    note_book.add_note(name, tag, content)
+    note_book.add_note(Note(name, tag, content))
     return "✅ Note added."
 
 
