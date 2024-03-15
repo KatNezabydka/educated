@@ -6,3 +6,10 @@ class Note:
 
     def __str__(self):
         return f"Name: {self.name}\nTag: {self.tag if self.tag else 'No Tag'}\nContent: {self.content}"
+
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "tag": self.tag,
+            "content": self.content
+        }
