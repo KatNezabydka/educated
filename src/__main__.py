@@ -88,6 +88,7 @@ def show_help():
         Fore.YELLOW
         + "--> phone [name]: Show the phone number for the specified contact."
     )
+    print(Fore.YELLOW + "--> find_contact: [name] show all information about person")
     print(Fore.YELLOW + "--> show-all: Show all contacts in the address book.")
     print(
         Fore.YELLOW
@@ -259,6 +260,25 @@ def show_phone(args: list, book: AddressBook) -> str:
     return book.find(name).print_phones()
 
 
+@input_error
+def find_contact(args: list, book: AddressBook) -> str:
+    """
+    Finds a contact in the address book and updates its information if provided.
+
+    @param args: A list containing contact information in the order: [name].
+    @param book: An instance of the AddressBook class.
+    @return: A string message indicating the result of the operation.
+    @input_error: Indicates potential input errors, such as missing or invalid arguments.
+    """
+    name = args[0]
+    record = book.find(name)
+    if record:
+        return record
+    return (
+        f"{Fore.YELLOW} The contact does not exist, use the 'add' command to create it."
+    )
+
+
 def show_all(book: AddressBook) -> print:
     """
     Show all contacts in the address book.
@@ -326,7 +346,7 @@ def show_birthday(args: list, book: AddressBook) -> str:
     name = args[0]
     record = book.find(name)
     if record is not None and record.has_birthday() is not False:
-        return record.show_birthday()
+        return record.print_birthday()
     return f"{Fore.YELLOW} Contact not found or birthday is empty"
 
 
@@ -614,12 +634,14 @@ def main():
                 print(change_contact(args, book))
             case "phone":
                 print(show_phone(args, book))
+            case "find-contact":
+                print(find_contact(args, book))
             case "show-all":
                 show_all(book)
             case "add-birthday":
                 print(add_birthday(args, book))
             case "show-birthday":
-                show_birthday(args, book)
+                print(show_birthday(args, book))
             case "show-all-birthdays":
                 show_birthdays_within_days(args, book)
             case "birthdays":

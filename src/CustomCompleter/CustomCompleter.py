@@ -21,6 +21,7 @@ class CustomCompleter(Completer):
             "add-email",
             "change",
             "phone",
+            "find-contact",
             "show-all",
             "add-birthday",
             "show-birthday",
@@ -33,6 +34,8 @@ class CustomCompleter(Completer):
             "show-all-notes",
             "show-notes-tag",
             "show-all-notes-tag",
+            "exit",
+            "close"
         ]
 
     def get_completions(self, document, complete_event):

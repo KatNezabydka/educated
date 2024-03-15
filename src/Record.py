@@ -94,7 +94,9 @@ class Record:
             )
 
     def print_birthday(self) -> str:
-        return f"🎂 birthday: {self.birthday.value.strftime('%d.%m.%Y')}"
+        if self.has_birthday():
+            return f"🎂 birthday: {self.birthday.value.strftime('%d.%m.%Y')}"
+        return ""
 
     def add_birthday(self, birthday) -> "Record":
         self.birthday = Birthday(birthday)
@@ -103,11 +105,8 @@ class Record:
     def get_birthday(self) -> "Record":
         return self.birthday
 
-    def show_birthday(self):
-        print(self.birthday.value.strftime("%d.%m.%Y"))
-
     def has_birthday(self) -> bool:
         return self.birthday != None
 
     def __str__(self):
-        return f"Contact name: {self.name.value}, birthday: {self.birthday} phones: {'; '.join(phone.value for phone in self.phones)}"
+        return f"Contact name: {self.name.value}, {self.print_birthday()} {self.print_phones()} {self.print_addresses()}"
