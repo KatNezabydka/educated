@@ -8,9 +8,7 @@ def validate_email(func):
         email = args[1]
         pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
         if not re.match(pattern, email):
-            raise ValidationError(
-                "Incorrect email, please use a valid email format (e.g., example@example.com)"
-            )
+            raise ValidationError("Incorrect email, please use a valid email format (e.g., example@example.com)")
         return func(*args, **kwargs)
 
     return wrapper
