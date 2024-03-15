@@ -17,13 +17,32 @@ def prompt_with_completion():
     return text
 
 
-ERROR_MESSAGES = {
-    ValueError: f"{Fore.YELLOW} Give me name and phone/birthday please.",
-    ValidationError: lambda e: str(e),
-    KeyError: f"{Fore.RED} Contact not found.",
-    AttributeError: f"{Fore.RED} Contact not found.",
-    IndexError: f"{Fore.YELLOW} Give me name.",
-}
+def validate_address_book(func):
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except ValueError:
+            raise ValidationError("Give me name and phone please.")
+        except KeyError:
+            raise ValidationError("Contact not found.")
+        except AttributeError:
+            raise ValidationError("Contact not found.")
+        except IndexError:
+            raise ValidationError("Give me name.")
+    return wrapper
+
+
+def validate_note_book(func):
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except ValueError:
+            raise ValidationError("Give name, tag and content please.")
+        except KeyError:
+            raise ValidationError("Note not found.")
+        except IndexError:
+            raise ValidationError("Give name, tag and content please.")
+    return wrapper
 
 
 def input_error(func):
@@ -47,15 +66,10 @@ def input_error(func):
     def inner(*args, **kwargs):
         try:
             return func(*args, **kwargs)
+        except ValidationError as e:
+            return f"{Fore.RED}{str(e)}"
         except Exception as e:
-            error_message = ERROR_MESSAGES.get(type(e))
-            if error_message:
-                if callable(error_message):
-                    return error_message(e)
-                else:
-                    return error_message
-            else:
-                raise e
+            return f"{Fore.RED}An unexpected error occurred: {str(e)}"
 
     return inner
 
@@ -67,58 +81,23 @@ def show_help():
     print("*" * 30 + " < HELP MENU START > " + "*" * 30)
     print(Fore.MAGENTA + Style.BRIGHT + "Available commands:")
     print(Fore.YELLOW + "--> hello: Get a greeting from the bot.")
-    print(
-        Fore.YELLOW
-        + "--> add [name] [phone]: Add a new contact with the name and phone number."
-    )
-    print(
-        Fore.YELLOW
-        + "--> add-address [name] [address]: Add an address for the specified contact."
-    )
-    print(
-        Fore.YELLOW
-        + "--> add-email [name] [email]: Add an email address for the specified contact."
-    )
-    print(
-        Fore.YELLOW
-        + "--> change [name] [new phone]: Change the phone number for the specified contact."
-    )
-    print(
-        Fore.YELLOW
-        + "--> phone [name]: Show the phone number for the specified contact."
-    )
+    print(Fore.YELLOW + "--> add [name] [phone]: Add a new contact with the name and phone number.")
+    print(Fore.YELLOW + "--> add-address [name] [address]: Add an address for the specified contact.")
+    print(Fore.YELLOW + "--> add-email [name] [email]: Add an email address for the specified contact.")
+    print(Fore.YELLOW + "--> change [name] [new phone]: Change the phone number for the specified contact.")
+    print(Fore.YELLOW + "--> phone [name]: Show the phone number for the specified contact.")
     print(Fore.YELLOW + "--> show-all: Show all contacts in the address book.")
-    print(
-        Fore.YELLOW
-        + "--> add-birthday [name] [birthday]: Add a birthday for the specified contact."
-    )
-    print(
-        Fore.YELLOW
-        + "--> show-birthday [name]: Show the birthday for the specified contact."
-    )
-    print(
-        Fore.YELLOW
-        + "--> show-all-birthdays [days]: Show birthdays happening within the specified number of days."
-    )
+    print(Fore.YELLOW + "--> add-birthday [name] [birthday]: Add a birthday for the specified contact.")
+    print(Fore.YELLOW + "--> show-birthday [name]: Show the birthday for the specified contact.")
+    print(Fore.YELLOW + "--> show-all-birthdays [days]: Show birthdays happening within the specified number of days.")
     print(Fore.YELLOW + "--> birthdays: Show birthdays happening within the next week.")
     print(Fore.YELLOW + "--> add-note [note]: Add a note to the note book.")
-    print(
-        Fore.YELLOW
-        + "--> edit-note-content [note_id] [new_content]: Edit the content of a note."
-    )
+    print(Fore.YELLOW + "--> edit-note-content [note_id] [new_content]: Edit the content of a note.")
     print(Fore.YELLOW + "--> delete-note [note_id]: Delete a note from the note book.")
-    print(
-        Fore.YELLOW + "--> show-note [note_id]: Show the content of a note by its ID."
-    )
-    print(
-        Fore.YELLOW
-        + "--> show-all-notes: Show all notes in the note book, sorted by name."
-    )
+    print(Fore.YELLOW + "--> show-note [note_id]: Show the content of a note by its ID.")
+    print(Fore.YELLOW + "--> show-all-notes: Show all notes in the note book, sorted by name.")
     print(Fore.YELLOW + "--> show-notes-tag [tag]: Show notes in the note book by tag.")
-    print(
-        Fore.YELLOW
-        + "--> show-all-notes-tag: Show all notes in the note book, sorted by tag."
-    )
+    print(Fore.YELLOW + "--> show-all-notes-tag: Show all notes in the note book, sorted by tag.")
     print(Fore.RED + "--> close or exit: Close the program.")
     print("*" * 30 + " < HELP MENU END > " + "*" * 30)
     print(Style.RESET_ALL)  # Reset colors
@@ -132,6 +111,7 @@ def parse_input(user_input):
 
 
 @input_error
+@validate_address_book
 def add_contact(args: list, book: AddressBook) -> str:
     """
     Add a new contact to the address book.
@@ -146,7 +126,6 @@ def add_contact(args: list, book: AddressBook) -> str:
     Notes:
         If a contact with the same name already exists in the address book, 
         the function will not add a new contact and return a failure message.
-
     """
     name, phone = args
     if book.find(name) is None:
@@ -156,6 +135,7 @@ def add_contact(args: list, book: AddressBook) -> str:
 
 
 @input_error
+@validate_address_book
 def add_email(args: list, book: AddressBook) -> str:
     """
     Add email to a contact.
@@ -170,8 +150,8 @@ def add_email(args: list, book: AddressBook) -> str:
     Notes:
         If the contact already exists, the email will be added to the existing contact.
         If the contact does not exist, a new contact will be created.
-
     """
+
     name, email = args
     record = book.find(name)
     if record:
@@ -184,6 +164,7 @@ def add_email(args: list, book: AddressBook) -> str:
 
 
 @input_error
+@validate_address_book
 def add_address(args: list, book: AddressBook) -> str:
     """
     Add address to a contact.
@@ -198,7 +179,6 @@ def add_address(args: list, book: AddressBook) -> str:
     Notes:
         If the contact already exists, the address will be added to the existing contact.
         If the contact does not exist, a new contact will be created.
-
     """
     name = args[0]
     address = " ".join(map(str, args[1:]))
@@ -213,6 +193,7 @@ def add_address(args: list, book: AddressBook) -> str:
 
 
 @input_error
+@validate_address_book
 def change_contact(args: list, book: AddressBook) -> str:
     """
     Change the phone number of an existing contact.
@@ -227,7 +208,6 @@ def change_contact(args: list, book: AddressBook) -> str:
     Notes:
         If the contact exists, its phone number will be updated with the new one.
         If the contact does not exist, a failure message will be returned.
-
     """
     name, phone = args
     contact = book.find(name)
@@ -238,6 +218,7 @@ def change_contact(args: list, book: AddressBook) -> str:
 
 
 @input_error
+@validate_address_book
 def show_phone(args: list, book: AddressBook) -> str:
     """
     Show the phone numbers of a contact.
@@ -252,7 +233,6 @@ def show_phone(args: list, book: AddressBook) -> str:
     Notes:
         If the contact exists, its phone numbers will be printed.
         If the contact does not exist, a failure message will be returned.
-
     """
     name = args[0]
     return book.find(name).print_phones()
@@ -281,6 +261,7 @@ def show_all(book: AddressBook) -> print:
 
 
 @input_error
+@validate_address_book
 def add_birthday(args: list, book: AddressBook) -> str:
     """
     Add birthday to a contact.
@@ -306,6 +287,7 @@ def add_birthday(args: list, book: AddressBook) -> str:
 
 
 @input_error
+@validate_address_book
 def show_birthday(args: list, book: AddressBook) -> str:
     """
     Show the birthday of a contact.
@@ -320,7 +302,6 @@ def show_birthday(args: list, book: AddressBook) -> str:
     Notes:
         If the contact exists and has a birthday, its birthday will be returned.
         If the contact does not exist or does not have a birthday, a failure message will be returned.
-
     """
     name = args[0]
     record = book.find(name)
@@ -330,6 +311,7 @@ def show_birthday(args: list, book: AddressBook) -> str:
 
 
 @input_error
+@validate_address_book
 def show_birthdays_within_days(args, book: AddressBook):
     """
     Show birthdays of contacts within specified days.
@@ -408,6 +390,7 @@ def birthdays(book: AddressBook) -> print:
 
 
 @input_error
+@validate_note_book
 def add_note(args: list, note_book: NoteBook) -> str:
     """
     Add a note to the notebook.
@@ -430,6 +413,7 @@ def add_note(args: list, note_book: NoteBook) -> str:
 
 
 @input_error
+@validate_note_book
 def edit_note_content(args: list, note_book: NoteBook) -> str:
     """
     Edit the content of a note.
@@ -451,6 +435,7 @@ def edit_note_content(args: list, note_book: NoteBook) -> str:
 
 
 @input_error
+@validate_note_book
 def edit_note_tag(args: list, note_book: NoteBook) -> str:
     """
     Edit the tag of a note.
@@ -471,6 +456,7 @@ def edit_note_tag(args: list, note_book: NoteBook) -> str:
 
 
 @input_error
+@validate_note_book
 def delete_note(args: list, note_book: NoteBook) -> str:
     """
     Delete a note from the notebook.
@@ -491,6 +477,7 @@ def delete_note(args: list, note_book: NoteBook) -> str:
 
 
 @input_error
+@validate_note_book
 def show_note_by_name(args: list, note_book: NoteBook) -> str:
     """
     Show a note by its name.
@@ -509,7 +496,6 @@ def show_note_by_name(args: list, note_book: NoteBook) -> str:
     return note_book.show_by_name(name)
 
 
-@input_error
 def show_all_notes_sorted_by_name(note_book: NoteBook) -> str:
     """
     Show all notes sorted by name.
@@ -527,6 +513,7 @@ def show_all_notes_sorted_by_name(note_book: NoteBook) -> str:
 
 
 @input_error
+@validate_note_book
 def show_notes_by_tag(args: list, note_book: NoteBook) -> str:
     """
     Show notes by tag.
@@ -545,7 +532,6 @@ def show_notes_by_tag(args: list, note_book: NoteBook) -> str:
     return note_book.show_by_tag(tag)
 
 
-@input_error
 def show_all_notes_sorted_by_tag(note_book: NoteBook) -> str:
     """
     Show all notes sorted by tag.
@@ -582,7 +568,7 @@ def main():
 
     # Load or generate fake users
     users_data = load_or_generate_users()
-
+    
     # Add fake users to the address book
     for user in users_data:
         fake_user = Record(user["name"])
