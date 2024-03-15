@@ -44,6 +44,7 @@ def input_error(func):
         This decorator is useful for handling errors that may occur due to invalid input.
         It provides a way to customize error messages for specific exception types.
     """
+
     def inner(*args, **kwargs):
         try:
             return func(*args, **kwargs)
@@ -144,11 +145,10 @@ def add_contact(args: list, book: AddressBook) -> str:
         str: A message indicating success or failure.
 
     Notes:
-        If a contact with the same name already exists in the address book, 
+        If a contact with the same name already exists in the address book,
         the function will not add a new contact and return a failure message.
 
     """
-    name, phone 
     name, phone = args
     if book.find(name) is None:
         book.add_record(Record(name).add_phone(phone))
