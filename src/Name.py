@@ -8,7 +8,9 @@ def validate_name(func):
         if not value.isalpha():
             raise ValidationError("The name must consist of letters only")
         if not value.istitle():
-            raise ValidationError("The name must start with an upper case letter and the rest letters must be lower case")
+            raise ValidationError(
+                "The name must start with an upper case letter and the rest letters must be lower case"
+            )
         return func(*args, **kwargs)
 
     return wrapper

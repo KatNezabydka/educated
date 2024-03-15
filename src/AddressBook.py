@@ -2,34 +2,15 @@ from Record import Record
 
 from collections import UserDict
 from datetime import datetime, timedelta
-from ValidationError import ValidationError
-
-
-def validate_address_book(func):
-    def wrapper(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except ValueError:
-            raise ValidationError("Give me name and phone/birthday please.")
-        except KeyError:
-            raise ValidationError("Contact not found.")
-        except AttributeError:
-            raise ValidationError("Contact not found.")
-        except IndexError:
-            raise ValidationError("Give me name.")
-    return wrapper
 
 
 class AddressBook(UserDict):
-    @validate_address_book
     def add_record(self, record: Record) -> None:
         self.data[record.name.value] = record
 
-    @validate_address_book
     def delete(self, name: str) -> None:
         del self.data[name]
 
-    @validate_address_book
     def find(self, name: str) -> Record | None:
         return self.data.get(name, None)
 
