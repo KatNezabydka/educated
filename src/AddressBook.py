@@ -16,7 +16,6 @@ class AddressBook(UserDict):
 
     def export(self) -> list:
         existing_data = []
-        default_data = datetime.today()
         for record in self.data.values():
             existing_data.append(
                 {

@@ -1,6 +1,5 @@
 from collections import defaultdict
 from AddressBook import AddressBook
-from Record import Record
 from ValidationError import ValidationError
 from NoteBook import NoteBook
 from Faker.user_management import load_or_generate_users, save_users
@@ -10,6 +9,7 @@ from prompt_toolkit import prompt
 from datetime import datetime, timedelta
 from CustomCompleter.CustomCompleter import CustomCompleter, custom_style
 from src.Note import Note
+from src.Record import Record
 
 completer = CustomCompleter()
 
@@ -70,59 +70,24 @@ def show_help():
     print("*" * 30 + " < HELP MENU START > " + "*" * 30)
     print(Fore.MAGENTA + Style.BRIGHT + "Available commands:")
     print(Fore.YELLOW + "--> hello: Get a greeting from the bot.")
-    print(
-        Fore.YELLOW
-        + "--> add [name] [phone]: Add a new contact with the name and phone number."
-    )
-    print(
-        Fore.YELLOW
-        + "--> add-address [name] [address]: Add an address for the specified contact."
-    )
-    print(
-        Fore.YELLOW
-        + "--> add-email [name] [email]: Add an email address for the specified contact."
-    )
-    print(
-        Fore.YELLOW
-        + "--> change [name] [new phone]: Change the phone number for the specified contact."
-    )
-    print(
-        Fore.YELLOW
-        + "--> phone [name]: Show the phone number for the specified contact."
-    )
+    print(Fore.YELLOW + "--> add [name] [phone]: Add a new contact with the name and phone number.")
+    print(Fore.YELLOW + "--> add-address [name] [address]: Add an address for the specified contact.")
+    print(Fore.YELLOW + "--> add-email [name] [email]: Add an email address for the specified contact.")
+    print(Fore.YELLOW + "--> change [name] [new phone]: Change the phone number for the specified contact.")
+    print(Fore.YELLOW + "--> phone [name]: Show the phone number for the specified contact.")
     print(Fore.YELLOW + "--> find_contact: [name] show all information about person")
     print(Fore.YELLOW + "--> show-all: Show all contacts in the address book.")
-    print(
-        Fore.YELLOW
-        + "--> add-birthday [name] [birthday]: Add a birthday for the specified contact."
-    )
-    print(
-        Fore.YELLOW
-        + "--> show-birthday [name]: Show the birthday for the specified contact."
-    )
-    print(
-        Fore.YELLOW
-        + "--> show-all-birthdays [days]: Show birthdays happening within the specified number of days."
-    )
+    print(Fore.YELLOW + "--> add-birthday [name] [birthday]: Add a birthday for the specified contact.")
+    print(Fore.YELLOW + "--> show-birthday [name]: Show the birthday for the specified contact.")
+    print(Fore.YELLOW + "--> show-all-birthdays [days]: Show birthdays happening within the specified number of days.")
     print(Fore.YELLOW + "--> birthdays: Show birthdays happening within the next week.")
     print(Fore.YELLOW + "--> add-note [note]: Add a note to the note book.")
-    print(
-        Fore.YELLOW
-        + "--> edit-note-content [note_id] [new_content]: Edit the content of a note."
-    )
+    print(Fore.YELLOW + "--> edit-note-content [note_id] [new_content]: Edit the content of a note.")
     print(Fore.YELLOW + "--> delete-note [note_id]: Delete a note from the note book.")
-    print(
-        Fore.YELLOW + "--> show-note [note_id]: Show the content of a note by its ID."
-    )
-    print(
-        Fore.YELLOW
-        + "--> show-all-notes: Show all notes in the note book, sorted by name."
-    )
+    print(Fore.YELLOW + "--> show-note [note_id]: Show the content of a note by its ID.")
+    print(Fore.YELLOW + "--> show-all-notes: Show all notes in the note book, sorted by name.")
     print(Fore.YELLOW + "--> show-notes-tag [tag]: Show notes in the note book by tag.")
-    print(
-        Fore.YELLOW
-        + "--> show-all-notes-tag: Show all notes in the note book, sorted by tag."
-    )
+    print(Fore.YELLOW + "--> show-all-notes-tag: Show all notes in the note book, sorted by tag.")
     print(Fore.RED + "--> close or exit: Close the program.")
     print("*" * 30 + " < HELP MENU END > " + "*" * 30)
     print(Style.RESET_ALL)  # Reset colors
@@ -263,7 +228,7 @@ def show_phone(args: list, book: AddressBook) -> str:
 
 
 @input_error
-def find_contact(args: list, book: AddressBook) -> str:
+def find_contact(args: list, book: AddressBook) -> Record | str:
     """
     Finds a contact in the address book and updates its information if provided.
 
@@ -443,7 +408,7 @@ def add_note(args: list, note_book: NoteBook) -> str:
         str: A message indicating success.
 
     Notes:
-        This function adds a note to the note book with the provided name, tag, and content.
+        This function adds a note to the notebook with the provided name, tag, and content.
     """
     name = args[0]
     tag = args[1]
@@ -506,7 +471,7 @@ def delete_note(args: list, note_book: NoteBook) -> str:
         str: A message indicating success.
 
     Notes:
-        This function deletes a note from the note book based on its name.
+        This function deletes a note from the notebook based on its name.
     """
     name = args[0]
     note_book.delete_note(name)
@@ -526,7 +491,7 @@ def show_note_by_name(args: list, note_book: NoteBook) -> str:
         str: A string containing the content of the note.
 
     Notes:
-        This function retrieves and returns the content of a note from the note book based on its name.
+        This function retrieves and returns the content of a note from the notebook based on its name.
     """
     name = args[0]
     return note_book.show_by_name(name)
@@ -544,7 +509,7 @@ def show_all_notes_sorted_by_name(note_book: NoteBook) -> str:
         str: A string containing all notes sorted by name.
 
     Notes:
-        This function retrieves all notes from the note book and returns them as a string, sorted by name.
+        This function retrieves all notes from the notebook and returns them as a string, sorted by name.
     """
     return note_book.show_all_sorted_by_name()
 
@@ -562,7 +527,7 @@ def show_notes_by_tag(args: list, note_book: NoteBook) -> str:
         str: A string containing the notes with the specified tag.
 
     Notes:
-        This function retrieves and returns the notes from the note book based on their tag.
+        This function retrieves and returns the notes from the notebook based on their tag.
     """
     tag = args[0]
     return note_book.show_by_tag(tag)
@@ -580,7 +545,7 @@ def show_all_notes_sorted_by_tag(note_book: NoteBook) -> str:
         str: A string containing all notes sorted by tag.
 
     Notes:
-        This function retrieves all notes from the note book and returns them as a string, sorted by tag.
+        This function retrieves all notes from the notebook and returns them as a string, sorted by tag.
     """
     return note_book.show_all_sorted_by_tag()
 

@@ -1,8 +1,8 @@
 from Address import Address
-from Name import Name
-from Birthday import Birthday
-from Phone import Phone
 from Email import Email
+from Name import Name
+from Phone import Phone
+from src.Birthday import Birthday
 
 
 class Record:
@@ -66,8 +66,8 @@ class Record:
         self.delete_email(old_email)
         self.add_email(new_email)
 
-    def edit_address(self, old_address, new_address):
-        self.delete_addresses(old_address)
+    def edit_address(self, new_address):
+        self.delete_addresses()
         self.add_address(new_address)
 
     def find_phone(self, search_phone):
@@ -102,11 +102,11 @@ class Record:
         self.birthday = Birthday(birthday)
         return self
 
-    def get_birthday(self) -> "Record":
+    def get_birthday(self) -> Birthday:
         return self.birthday
 
     def has_birthday(self) -> bool:
-        return self.birthday != None
+        return self.birthday is not None
 
     def __str__(self):
         return f"Contact name: {self.name.value}, {self.print_birthday()} {self.print_phones()} {self.print_addresses()}"
