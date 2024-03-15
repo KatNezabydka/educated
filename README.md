@@ -87,10 +87,10 @@ This chat bot provides functionality to manage an address book. It offers the fo
 - `hello`: Prints a greeting message.
 - `add [name] [phone]`: Adds a new contact with the specified name and phone number.
 - `add-address [name] [address]`: Adds an address for the specified contact.
-- `add-email [name] [email]`: Adds an email address for the specified contact.
+- add-email [name] [email]`: Adds an email address for the specified contact.
 - `change [name] [new phone]`: Changes the phone number for the specified contact.
 - `phone [name]`: Shows the phone number for the specified contact.
-- `find_contact: [name] [phone] [email] [address]` show all information about person
+- `find-contact: [name]` show all information about person
 - `show_all`: Shows all contacts in the address book.
 - `add-birthday [name] [birthday]`: Adds a birthday for the specified contact.
 - `show-birthday [name]`: Shows the birthday for the specified contact.
