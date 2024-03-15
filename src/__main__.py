@@ -148,7 +148,6 @@ def add_contact(args: list, book: AddressBook) -> str:
         the function will not add a new contact and return a failure message.
 
     """
-    name, phone 
     name, phone = args
     if book.find(name) is None:
         book.add_record(Record(name).add_phone(phone))
