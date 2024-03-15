@@ -9,6 +9,7 @@ from colorama import init, Fore, Style, Back
 from prompt_toolkit import prompt
 from datetime import datetime, timedelta
 from CustomCompleter.CustomCompleter import CustomCompleter, custom_style
+from src.Note import Note
 
 completer = CustomCompleter()
 
@@ -617,7 +618,7 @@ def main():
     notes_data = load_or_generate_notes()
     # Add notes to the notebook
     for note in notes_data:
-        note_book.add_note(note["name"], note["tag"], note["content"])
+        note_book.add_note(note)
 
     while True:
         """

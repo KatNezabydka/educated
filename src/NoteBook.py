@@ -3,8 +3,8 @@ from Note import Note
 
 
 class NoteBook(UserDict):
-    def add_note(self, name, tag, content):
-        self.data[name] = Note(name, tag, content)
+    def add_note(self, note):
+        self.data[note.name] = note
 
     def edit_note_content(self, name, new_content):
         if name in self.data:
@@ -48,11 +48,5 @@ class NoteBook(UserDict):
     def export(self) -> list:
         existing_data = []
         for note in self.data.values():
-            existing_data.append(
-                {
-                    "name": note.name,
-                    "tag": note.tag,
-                    "content": note.content
-                }
-            )
+            existing_data.append(note.to_dict())
         return existing_data
