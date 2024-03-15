@@ -44,3 +44,15 @@ class NoteBook(UserDict):
     def show_all_sorted_by_tag(self):
         sorted_notes = sorted(self.data.items(), key=lambda x: x[1].tag)
         return "\n\n".join([str(note) for name, note in sorted_notes])
+
+    def export(self) -> list:
+        existing_data = []
+        for note in self.data.values():
+            existing_data.append(
+                {
+                    "name": note.name,
+                    "tag": note.tag,
+                    "content": note.content
+                }
+            )
+        return existing_data
