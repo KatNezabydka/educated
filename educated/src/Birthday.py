@@ -1,6 +1,7 @@
-from Field import Field
-from ValidationError import ValidationError
 from datetime import datetime
+
+from educated.src.Field import Field
+from educated.src.ValidationError import ValidationError
 
 
 def validate_birthday(func):

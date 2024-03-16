@@ -1,15 +1,16 @@
 from collections import defaultdict
-from AddressBook import AddressBook
-from ValidationError import ValidationError
-from NoteBook import NoteBook
-from Faker.user_management import load_or_generate_users, save_users
-from Faker.note_management import load_or_generate_notes, save_notes
 from colorama import init, Fore, Style, Back
 from prompt_toolkit import prompt
 from datetime import datetime, timedelta
-from CustomCompleter.CustomCompleter import CustomCompleter, custom_style
-from src.Note import Note
-from src.Record import Record
+
+from educated.src.AddressBook import AddressBook
+from educated.src.ValidationError import ValidationError
+from educated.src.NoteBook import NoteBook
+from educated.src.Faker.user_management import load_or_generate_users, save_users
+from educated.src.Faker.note_management import load_or_generate_notes, save_notes
+from educated.src.CustomCompleter.CustomCompleter import CustomCompleter, custom_style
+from educated.src.Note import Note
+from educated.src.Record import Record
 
 completer = CustomCompleter()
 

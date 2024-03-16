@@ -1,8 +1,8 @@
-from Address import Address
-from Email import Email
-from Name import Name
-from Phone import Phone
-from src.Birthday import Birthday
+from educated.src.Address import Address
+from educated.src.Email import Email
+from educated.src.Name import Name
+from educated.src.Phone import Phone
+from educated.src.Birthday import Birthday
 
 
 class Record:

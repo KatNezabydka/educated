@@ -1,8 +1,7 @@
-from Record import Record
-
 from collections import UserDict
 from datetime import datetime, timedelta
 
+from educated.src.Record import Record
 
 class AddressBook(UserDict):
     def add_record(self, record: Record) -> None:
