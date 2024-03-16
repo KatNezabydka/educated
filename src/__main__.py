@@ -405,7 +405,8 @@ def show_birthdays_within_days(args, book: AddressBook) -> str:
 
                 birthdays_within_days.append(
                     f"{Fore.BLUE}📅{birthday_this_year.strftime('%d.%m.%Y')} {days_until_str} - {Fore.GREEN}👤{name}")
-
+    if len(birthdays_within_days) == 0:
+        return f"No upcoming birthdays within the {days} days found"
     return '\n'.join(birthdays_within_days)
 
 
