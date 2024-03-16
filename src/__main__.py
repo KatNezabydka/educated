@@ -4,10 +4,12 @@ from Record import Record
 from ValidationError import ValidationError
 from NoteBook import NoteBook
 from Faker.user_management import load_or_generate_users, save_users
+from Faker.note_management import load_or_generate_notes, save_notes
 from colorama import init, Fore, Style, Back
 from prompt_toolkit import prompt
 from datetime import datetime, timedelta
 from CustomCompleter.CustomCompleter import CustomCompleter, custom_style
+from src.Note import Note
 
 completer = CustomCompleter()
 
@@ -446,7 +448,7 @@ def add_note(args: list, note_book: NoteBook) -> str:
     name = args[0]
     tag = args[1]
     content = " ".join(args[2:])
-    note_book.add_note(name, tag, content)
+    note_book.add_note(Note(name, tag, content))
     return "✅ Note added."
 
 
@@ -612,6 +614,12 @@ def main():
             fake_user.add_birthday(user["birthday"])
         book.add_record(fake_user)
 
+    # Load or generate notes
+    notes_data = load_or_generate_notes()
+    # Add notes to the notebook
+    for note in notes_data:
+        note_book.add_note(Note(note["name"], note["tag"], note["content"]))
+
     while True:
         """
         Running the console with autocompletion
@@ -662,6 +670,7 @@ def main():
                 print(show_all_notes_sorted_by_tag(note_book))
             case _ if command in commands_to_close:
                 save_users(book.export(), filename="users_data.json")
+                save_notes(note_book.export(), filename="notes_data.json")
                 print(Fore.GREEN + "Good bye! 😊")
                 break
             case _:

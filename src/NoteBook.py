@@ -3,8 +3,8 @@ from Note import Note
 
 
 class NoteBook(UserDict):
-    def add_note(self, name, tag, content):
-        self.data[name] = Note(name, tag, content)
+    def add_note(self, note):
+        self.data[note.name] = note
 
     def edit_note_content(self, name, new_content):
         if name in self.data:
@@ -44,3 +44,9 @@ class NoteBook(UserDict):
     def show_all_sorted_by_tag(self):
         sorted_notes = sorted(self.data.items(), key=lambda x: x[1].tag)
         return "\n\n".join([str(note) for name, note in sorted_notes])
+
+    def export(self) -> list:
+        existing_data = []
+        for note in self.data.values():
+            existing_data.append(note.to_dict())
+        return existing_data
