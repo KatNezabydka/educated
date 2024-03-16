@@ -26,11 +26,6 @@ Console bot assistant
    ```bash
    educate
    ```
-4. For getting help:
-
-   ```bash
-   educate help
-   ```
 
 ### Additional Setup
 
