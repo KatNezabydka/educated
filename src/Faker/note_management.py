@@ -1,5 +1,4 @@
 from faker import Faker
-from src.Note import Note
 import json
 
 
@@ -49,4 +48,3 @@ def save_notes(notes_data, filename="notes_data.json"):
 
 def load_or_generate_notes():
     return load_notes()
-
