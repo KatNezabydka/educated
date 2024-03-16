@@ -1,6 +1,6 @@
 from setuptools import setup, find_namespace_packages
 
-setup(name='educated',
+setup(name='project_educate1',
       version='1',
       description='helper for students',
       url='https://github.com/KatNezabydka/project-educate1',
@@ -9,5 +9,6 @@ setup(name='educated',
       license='MIT',
       packages=find_namespace_packages(),
       install_requires=["black", "colorama", "Faker", "prompt_toolkit"],
-      entry_points={'console_scripts': ['educate = educated.src.__main__:main']}
+      entry_points={'console_scripts': ['educate = project_educate1.src.__main__:main']}
+
       )
