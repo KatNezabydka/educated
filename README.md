@@ -1,10 +1,6 @@
 # project-educate1
 
-Brief description of your project.
-
-## Local Deployment
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+Console bot assistant
 
 ### Prerequisites
 
@@ -19,56 +15,27 @@ These instructions will get you a copy of the project up and running on your loc
    git clone https://github.com/KatNezabydka/project-educate1.git
    ```
 
-2. Navigate to the project directory:
+2. Install the package:
 
    ```bash
-   cd your_project
+   pip install .
    ```
 
-3. Create a virtual environment:
+3. Run from console:
 
    ```bash
-   python3 -m venv env
+   educate
    ```
-
-4. Activate the virtual environment:
-
-   - **Mac / Linux:**
-
-     ```bash
-     source env/bin/activate
-     ```
-
-   - **Windows:**
-
-     ```bash
-     .\env\Scripts\activate
-     ```
-
-   - Deactivate the virtual environment - **Mac / Linux / Windows:**:
-
-     ```bash
-     deactivate
-     ```
-
-5. Install required modules:
+4. For getting help:
 
    ```bash
-   pip install -r requirements.txt
+   educate help
    ```
 
 ### Additional Setup
 
 - Ensure Python is installed on your system. If not, download and install Python from the [official website](https://www.python.org/).
 - Set up Git on your local machine if you haven't already. Download and install Git from the [official website](https://git-scm.com/).
-
-### Running the Application
-
-Use the following command to run the application:
-
-```bash
-python __main__.py
-```
 
 ## Libraries Used
 
