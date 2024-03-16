@@ -1,7 +1,7 @@
 from collections import UserDict
 
-from Note import Note
-from ValidationError import ValidationError
+from educated.src.Note import Note
+from educated.src.ValidationError import ValidationError
 
 
 class NoteBook(UserDict):

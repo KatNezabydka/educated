@@ -1,5 +1,5 @@
-from Field import Field
-from ValidationError import ValidationError
+from educated.src.Field import Field
+from educated.src.ValidationError import ValidationError
 
 
 def validate_phone(func):
