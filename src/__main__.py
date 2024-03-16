@@ -19,15 +19,6 @@ def prompt_with_completion():
     return text
 
 
-ERROR_MESSAGES = {
-    ValueError: f"{Fore.YELLOW} Give me name and phone/birthday please.",
-    ValidationError: lambda e: str(e),
-    KeyError: f"{Fore.RED} Contact not found.",
-    AttributeError: f"{Fore.RED} Contact not found.",
-    IndexError: f"{Fore.YELLOW} Give me name.",
-}
-
-
 def input_error(func):
     """
     Decorator to handle input errors gracefully.
@@ -50,13 +41,11 @@ def input_error(func):
     def inner(*args, **kwargs):
         try:
             return func(*args, **kwargs)
+        except ValidationError as e:
+            return str(e)
         except Exception as e:
-            error_message = ERROR_MESSAGES.get(type(e))
-            if error_message:
-                if callable(error_message):
-                    return error_message(e)
-                else:
-                    return error_message
+            if not callable(e):
+                return str(e)
             else:
                 raise e
 
@@ -115,9 +104,16 @@ def add_contact(args: list, book: AddressBook) -> str:
     Notes:
         If a contact with the same name already exists in the address book,
         the function will not add a new contact and return a failure message.
-
     """
-    name, phone = args
+
+    if len(args) == 0:
+        raise ValidationError("Name cannot be empty.")
+    name = args[0]
+
+    if len(args) == 1:
+        raise ValidationError("Phone number cannot be empty.")
+    phone = args[1]
+
     if book.find(name) is None:
         book.add_record(Record(name).add_phone(phone))
         return f"{Fore.GREEN} ✅ Contact added."
@@ -139,17 +135,22 @@ def add_email(args: list, book: AddressBook) -> str:
     Notes:
         If the contact already exists, the email will be added to the existing contact.
         If the contact does not exist, a new contact will be created.
-
     """
-    name, email = args
+
+    if len(args) == 0:
+        raise ValidationError("Name cannot be empty.")
+    name = args[0]
+
+    if len(args) == 1:
+        raise ValidationError("Email cannot be empty.")
+    email = args[1]
+
     record = book.find(name)
     if record:
         record.add_email(email)
         book.add_record(record)
         return f"{Fore.GREEN} ✅ Email added."
-    return (
-        f"{Fore.YELLOW} The contact does not exist, use the 'add' command to create it."
-    )
+    return f"{Fore.YELLOW} The contact does not exist, use the 'add' command to create it."
 
 
 @input_error
@@ -167,18 +168,22 @@ def add_address(args: list, book: AddressBook) -> str:
     Notes:
         If the contact already exists, the address will be added to the existing contact.
         If the contact does not exist, a new contact will be created.
-
     """
+
+    if len(args) == 0:
+        raise ValidationError("Name cannot be empty.")
     name = args[0]
+
+    if len(args) == 1:
+        raise ValidationError("Address cannot be empty.")
     address = " ".join(map(str, args[1:]))
+
     record = book.find(name)
     if record:
         record.add_address(address)
         book.add_record(record)
         return f"{Fore.GREEN} ✅ Address added."
-    return (
-        f"{Fore.YELLOW} The contact does not exist, use the 'add' command to create it."
-    )
+    return f"{Fore.YELLOW} The contact does not exist, use the 'add' command to create it."
 
 
 @input_error
@@ -196,9 +201,16 @@ def change_contact(args: list, book: AddressBook) -> str:
     Notes:
         If the contact exists, its phone number will be updated with the new one.
         If the contact does not exist, a failure message will be returned.
-
     """
-    name, phone = args
+
+    if len(args) == 0:
+        raise ValidationError("Name cannot be empty.")
+    name = args[0]
+
+    if len(args) == 1:
+        raise ValidationError("New phone number cannot be empty.")
+    phone = args[1]
+
     contact = book.find(name)
     if contact is not None:
         contact.delete_phones().add_phone(phone)
@@ -221,10 +233,16 @@ def show_phone(args: list, book: AddressBook) -> str:
     Notes:
         If the contact exists, its phone numbers will be printed.
         If the contact does not exist, a failure message will be returned.
-
     """
+
+    if len(args) == 0:
+        raise ValidationError("Name cannot be empty.")
     name = args[0]
-    return book.find(name).print_phones()
+
+    contact = book.find(name)
+    if contact is not None:
+        return contact.print_phones()
+    return f"{Fore.RED} Contact not found."
 
 
 @input_error
@@ -237,13 +255,15 @@ def find_contact(args: list, book: AddressBook) -> Record | str:
     @return: A string message indicating the result of the operation.
     @input_error: Indicates potential input errors, such as missing or invalid arguments.
     """
+
+    if len(args) == 0:
+        raise ValidationError("Name cannot be empty.")
     name = args[0]
+
     record = book.find(name)
     if record:
         return record
-    return (
-        f"{Fore.YELLOW} The contact does not exist, use the 'add' command to create it."
-    )
+    return f"{Fore.YELLOW} The contact does not exist, use the 'add' command to create it."
 
 
 def show_all(book: AddressBook) -> print:
@@ -260,12 +280,14 @@ def show_all(book: AddressBook) -> print:
         This function prints information about all contacts in the address book.
         If the address book is empty, it prints a message indicating that.
     """
+
     if len(book.data) == 0:
         print(Fore.RED + "The list is empty" + " ¯\\_(ツ)_/¯")
+        return
+
     for name, record in book.data.items():
         print(
-            f"👤 {name}. {record.print_birthday()} {record.print_phones()} {record.print_emails()} {record.print_addresses()}"
-        )
+            f"👤 {name}. {record.print_birthday()} {record.print_phones()} {record.print_emails()} {record.print_addresses()}")
 
 
 @input_error
@@ -283,14 +305,24 @@ def add_birthday(args: list, book: AddressBook) -> str:
     Notes:
         If the contact exists and does not have a birthday yet, the birthday will be added to the contact.
         If the contact does not exist or already has a birthday, a failure message will be returned.
-
     """
-    name, birthday = args
+
+    if len(args) == 0:
+        raise ValidationError("Name cannot be empty.")
+    name = args[0]
+
+    if len(args) == 1:
+        raise ValidationError("Birthday cannot be empty.")
+    birthday = args[1]
+
     record = book.find(name)
-    if record is not None and record.has_birthday() is False:
-        record.add_birthday(birthday)
-        return f"{Fore.GREEN} ✅ Birthday added."
-    return f"{Fore.YELLOW} Contact not found or birthday already exist."
+    if record is not None:
+        if record.has_birthday():
+            return f"{Fore.YELLOW} Birthday already exists for this contact."
+        else:
+            record.add_birthday(birthday)
+            return f"{Fore.GREEN} ✅ Birthday added."
+    return f"{Fore.YELLOW} Contact not found."
 
 
 @input_error
@@ -308,17 +340,23 @@ def show_birthday(args: list, book: AddressBook) -> str:
     Notes:
         If the contact exists and has a birthday, its birthday will be returned.
         If the contact does not exist or does not have a birthday, a failure message will be returned.
-
     """
+
+    if len(args) == 0:
+        raise ValidationError("Name cannot be empty.")
     name = args[0]
+
     record = book.find(name)
-    if record is not None and record.has_birthday() is not False:
-        return record.print_birthday()
-    return f"{Fore.YELLOW} Contact not found or birthday is empty"
+    if record is not None:
+        if record.has_birthday():
+            return record.print_birthday()
+        else:
+            return f"{Fore.YELLOW} Birthday is empty for this contact."
+    return f"{Fore.YELLOW} Contact not found."
 
 
 @input_error
-def show_birthdays_within_days(args, book: AddressBook):
+def show_birthdays_within_days(args, book: AddressBook) -> str:
     """
     Show birthdays of contacts within specified days.
 
@@ -327,54 +365,51 @@ def show_birthdays_within_days(args, book: AddressBook):
         book (AddressBook): An instance of the AddressBook class.
 
     Returns:
-        None
+        str: A string containing all the found upcoming birthdays.
 
     Notes:
         This function prints the birthdays of contacts that fall within the specified number of days
         from the current date.
     """
-    days = int(args[0])
-    today = datetime.now()
+
+    if len(args) == 0:
+        raise ValidationError("Number of days must be provided.")
+
+    try:
+        days = int(args[0])
+    except ValueError:
+        raise ValidationError("Number of days must be an integer.")
+
+    today = datetime.now().date()
     end_date = today + timedelta(days=days)
 
-    birthdays_within_days = {}
+    birthdays_within_days = []
     for name, contact in book.items():
-        birthday = datetime.strptime(str(contact.birthday), "%Y-%m-%d %H:%M:%S")
+        birthday = contact.get_birthday()
 
-        birthday_this_year = birthday.replace(year=today.year)
+        if birthday:
+            today = datetime.now().date()
+            birthday_this_year = datetime(today.year, birthday.value.month, birthday.value.day)
+            if birthday_this_year.date() < today:
+                birthday_this_year = birthday_this_year.replace(year=today.year + 1)
 
-        if birthday_this_year < today:
-            birthday_this_year = birthday.replace(year=today.year + 1)
+            if today <= birthday_this_year.date() <= end_date:
+                days_until_birthday = (birthday_this_year.date() - today).days
 
-        if today <= birthday_this_year <= end_date:
-            days_until_birthday = (birthday_this_year - today).days
+                if days_until_birthday == 0:
+                    days_until_str = "(today)"
+                elif days_until_birthday == 1:
+                    days_until_str = "(tomorrow)"
+                else:
+                    days_until_str = f"(in {days_until_birthday} days)"
 
-            if days_until_birthday == 0:
-                days_until_str = "(today)"
-            elif days_until_birthday == 1:
-                days_until_str = "(tomorrow)"
-            else:
-                days_until_str = f"(in {days_until_birthday} days)"
+                birthdays_within_days.append(
+                    f"{Fore.BLUE}📅{birthday_this_year.strftime('%d.%m.%Y')} {days_until_str} - {Fore.GREEN}👤{name}")
 
-            if birthday_this_year.date() not in birthdays_within_days:
-                birthdays_within_days[birthday_this_year.date()] = []
-            birthdays_within_days[birthday_this_year.date()].append(
-                (name, days_until_str)
-            )
-
-    birthdays_grouped = defaultdict(list)
-    for birthday, names in birthdays_within_days.items():
-        for name, days_until_str in names:
-            birthdays_grouped[(birthday, days_until_str)].append(name)
-
-    for (birthday, days_until_str), names in sorted(birthdays_grouped.items()):
-        names_str = ", ".join([f"👤{name}" for name in names])
-        print(
-            f"{Fore.BLUE}📅{birthday.strftime('%d.%m.%Y')} {days_until_str} - {Fore.GREEN}{names_str}"
-        )
+    return '\n'.join(birthdays_within_days)
 
 
-def birthdays(book: AddressBook) -> print:
+def birthdays(book: AddressBook) -> None:
     """
     Show upcoming birthdays.
 
@@ -389,8 +424,20 @@ def birthdays(book: AddressBook) -> print:
         If there are no upcoming birthdays, it prints a message indicating that the list is empty.
     """
     if len(book.data) == 0:
-        print("The list is empty")
-    for day, names in book.get_birthdays_per_week().items():
+        print("The Address Book is empty")
+        return  # Exit the function early if the address book is empty
+
+    try:
+        birthdays_per_week = book.get_birthdays_per_week()
+    except Exception as e:
+        print(f"Error: {e}")
+        return  # Exit the function if there's an error
+
+    if not any(birthdays_per_week.values()):
+        print("No upcoming birthdays within the current week")
+        return  # Exit the function if there are no upcoming birthdays
+
+    for day, names in birthdays_per_week.items():
         if names:
             print(f"{day}: {', '.join(names)}")
 
@@ -410,11 +457,20 @@ def add_note(args: list, note_book: NoteBook) -> str:
     Notes:
         This function adds a note to the notebook with the provided name, tag, and content.
     """
+
+    if len(args) == 0:
+        raise ValidationError("Name cannot be empty.")
     name = args[0]
-    tag = args[1]
+
+    tag = None
+    if len(args) > 1:
+        tag = args[1]
+
     content = " ".join(args[2:])
-    note_book.add_note(Note(name, tag, content))
-    return "✅ Note added."
+    if note_book.find(name) is None:
+        note_book.add_note(Note(name, tag, content))
+        return f"{Fore.GREEN} ✅ Note added."
+    return f"{Fore.YELLOW}Note with the same name already exists."
 
 
 @input_error
@@ -432,10 +488,14 @@ def edit_note_content(args: list, note_book: NoteBook) -> str:
     Notes:
         This function edits the content of a note identified by its name and updates it with the new content.
     """
+
+    if len(args) == 0:
+        raise ValidationError("Name cannot be empty.")
     name = args[0]
+
     new_content = " ".join(args[1:])
     note_book.edit_note_content(name, new_content)
-    return "Note content updated."
+    return "✅ Note content updated."
 
 
 @input_error
@@ -453,9 +513,17 @@ def edit_note_tag(args: list, note_book: NoteBook) -> str:
     Notes:
         This function edits the tag of a note identified by its name and updates it with the new tag.
     """
-    name, new_tag = args
+
+    if len(args) == 0:
+        raise ValidationError("Name cannot be empty.")
+    name = args[0]
+
+    new_tag = None
+    if len(args) > 1:
+        new_tag = args[1]
+
     note_book.edit_note_tag(name, new_tag)
-    return "Note tag updated."
+    return "✅ Note tag updated."
 
 
 @input_error
@@ -473,9 +541,12 @@ def delete_note(args: list, note_book: NoteBook) -> str:
     Notes:
         This function deletes a note from the notebook based on its name.
     """
+    if len(args) == 0:
+        raise ValidationError("Name cannot be empty.")
     name = args[0]
+
     note_book.delete_note(name)
-    return "Note deleted."
+    return "✅ Note deleted."
 
 
 @input_error
@@ -493,6 +564,9 @@ def show_note_by_name(args: list, note_book: NoteBook) -> str:
     Notes:
         This function retrieves and returns the content of a note from the notebook based on its name.
     """
+
+    if len(args) == 0:
+        raise ValidationError("Name cannot be empty.")
     name = args[0]
     return note_book.show_by_name(name)
 
@@ -529,6 +603,8 @@ def show_notes_by_tag(args: list, note_book: NoteBook) -> str:
     Notes:
         This function retrieves and returns the notes from the notebook based on their tag.
     """
+    if len(args) == 0:
+        raise ValidationError("Tag cannot be empty.")
     tag = args[0]
     return note_book.show_by_tag(tag)
 
@@ -616,7 +692,7 @@ def main():
             case "show-birthday":
                 print(show_birthday(args, book))
             case "show-all-birthdays":
-                show_birthdays_within_days(args, book)
+                print(show_birthdays_within_days(args, book))
             case "birthdays":
                 birthdays(book)
             case "add-note":
