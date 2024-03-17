@@ -25,6 +25,8 @@ class AddressBook(UserDict):
                         if record.birthday
                         else None
                     ),
+                    "email": record.emails[0].value if record.emails and record.emails[0].value else None,
+                    "address": record.addresses[0].value if record.addresses and record.addresses[0].value else None,
                 }
             )
         return existing_data

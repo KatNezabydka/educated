@@ -65,11 +65,11 @@ def show_help():
     print(Fore.YELLOW + "--> add-email [name] [email]: Add an email address for the specified contact.")
     print(Fore.YELLOW + "--> edit-phone [name] [new phone]: Change the phone number for the specified contact.")
     print(Fore.YELLOW + "--> find-phone [name]: Show the phone number for the specified contact.")
-    print(Fore.YELLOW + "--> find_contact: [name] show all information about person")
-    print(Fore.YELLOW + "--> show-all: Show all contacts in the address book.")
+    print(Fore.YELLOW + "--> find-contact: [name] show all information about person")
+    print(Fore.YELLOW + "--> show-contacts: Show all contacts in the address book.")
     print(Fore.YELLOW + "--> add-birthday [name] [birthday]: Add a birthday for the specified contact.")
     print(Fore.YELLOW + "--> show-birthday [name]: Show the birthday for the specified contact.")
-    print(Fore.YELLOW + "--> show-all-birthdays [days]: Show birthdays happening within the specified number of days.")
+    print(Fore.YELLOW + "--> show-birthdays [days]: Show birthdays happening within the specified number of days.")
     print(Fore.YELLOW + "--> birthdays-next-week: Show birthdays happening within the next week.")
     print(Fore.YELLOW + "--> add-note [note] [tag] [content]: Add a note to the note book.")
     print(Fore.YELLOW + "--> edit-note-content [note_name] [new_content]: Edit the content of a note.")
@@ -148,11 +148,11 @@ def add_email(args: list, book: AddressBook) -> str:
     email = args[1]
 
     record = book.find(name)
-    if record:
+    if record and record.has_email() is False:
         record.add_email(email)
         book.add_record(record)
         return f"{Fore.GREEN} ✅ Email added."
-    return f"{Fore.YELLOW} The contact does not exist, use the 'add' command to create it."
+    return f"{Fore.YELLOW} The contact does not exist, or already has email."
 
 
 @input_error
@@ -181,11 +181,11 @@ def add_address(args: list, book: AddressBook) -> str:
     address = " ".join(map(str, args[1:]))
 
     record = book.find(name)
-    if record:
+    if record and record.has_address() is False:
         record.add_address(address)
         book.add_record(record)
         return f"{Fore.GREEN} ✅ Address added."
-    return f"{Fore.YELLOW} The contact does not exist, use the 'add' command to create it."
+    return f"{Fore.YELLOW} The contact does not exist, or already has address."
 
 
 @input_error
@@ -265,7 +265,7 @@ def find_contact(args: list, book: AddressBook) -> Record | str:
     record = book.find(name)
     if record:
         return record
-    return f"{Fore.YELLOW} The contact does not exist, use the 'add' command to create it."
+    return f"{Fore.YELLOW} The contact does not exist, use the 'add-contact' command to create it."
 
 
 def show_all(book: AddressBook) -> print:
@@ -656,6 +656,10 @@ def main():
         fake_user.add_phone(user["phone"])
         if user["birthday"] is not None:
             fake_user.add_birthday(user["birthday"])
+        if "email" in user and user["email"] is not None:
+            fake_user.add_email(user["email"])
+        if "address" in user and user["address"] is not None:
+            fake_user.add_address(user["address"])
         book.add_record(fake_user)
 
     # Load or generate notes
@@ -688,15 +692,15 @@ def main():
                 print(show_phone(args, book))
             case "find-contact":
                 print(find_contact(args, book))
-            case "show-all":
+            case "show-contacts":
                 show_all(book)
             case "add-birthday":
                 print(add_birthday(args, book))
             case "show-birthday":
                 print(show_birthday(args, book))
-            case "show-all-birthdays":
+            case "show-birthdays":
                 print(show_birthdays_within_days(args, book))
-            case "birthdays-next-week":
+            case "show-next-week-birthdays":
                 birthdays(book)
             case "add-note":
                 print(add_note(args, note_book))

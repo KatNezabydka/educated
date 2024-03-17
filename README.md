@@ -53,10 +53,11 @@ This chat bot provides functionality to manage an address book. It offers the fo
 - `edit-phone [name] [new phone]`: Changes the phone number for the specified contact.
 - `find-phone [name]`: Shows the phone number for the specified contact.
 - `find-contact: [name]` show all information about person
-- `show_all`: Shows all contacts in the address book.
+- `show_contacts`: Shows all contacts in the address book.
 - `add-birthday [name] [birthday]`: Adds a birthday for the specified contact.
 - `show-birthday [name]`: Shows the birthday for the specified contact.
-- `birthdays-next-week`: Shows birthdays happening within the next week.
+- `show-birthdays`: Shows the birthday for the specified contact.
+- `show-next-week-birthdays`: Shows birthdays happening within the next week.
 - `add-note [note] [tag] [content]`: Adds a new note to the notebook.
 - `edit-note-content [note_name] [new_content]`: Edits the content of the note with the specified name.
 - `edit-note-tag [note_name] [new_tag]`: Edit the note tag.
