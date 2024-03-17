@@ -1,8 +1,8 @@
-from educated.src.Address import Address
-from educated.src.Email import Email
-from educated.src.Name import Name
-from educated.src.Phone import Phone
-from educated.src.Birthday import Birthday
+from project_educate1.src.Address import Address
+from project_educate1.src.Email import Email
+from project_educate1.src.Name import Name
+from project_educate1.src.Phone import Phone
+from project_educate1.src.Birthday import Birthday
 
 
 class Record:
