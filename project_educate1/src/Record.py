@@ -26,10 +26,16 @@ class Record:
 
         return self
 
+    def has_email(self) -> bool:
+        return len(self.emails) > 0
+
     def add_address(self, address) -> "Record":
         self.addresses.append(Address(address))
 
         return self
+    
+    def has_address(self) -> bool:
+        return len(self.addresses) > 0
 
     def delete_phones(self) -> "Record":
         self.phones = []
@@ -83,14 +89,14 @@ class Record:
         if not self.emails:
             return ""
         else:
-            return f"📧 emails: {'; '.join(email.value for email in self.emails)}"
+            return f"📧 email: {'; '.join(email.value for email in self.emails)}"
 
     def print_addresses(self) -> str:
         if not self.addresses:
             return ""
         else:
             return (
-                f"🏘 address: {'; '.join(address.value for address in self.addresses)}"
+                f"🏘 addres: {'; '.join(address.value for address in self.addresses)}"
             )
 
     def print_birthday(self) -> str:
