@@ -12,8 +12,8 @@ def generate_fake_user():
             "name": fake.first_name(),
             "birthday": fake.date_of_birth().strftime("%d.%m.%Y"),
             "phone": re.sub(r"\D", "", fake.phone_number())[:10],
-            "email": fake.email(),
-            "address": fake.address(),
+            # "email": fake.email(),
+            # "address": fake.address(),
         }
     except Exception as e:
         print(f"Error generating fake user: {e}")

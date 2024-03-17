@@ -8,7 +8,7 @@ fake = Faker()
 def generate_fake_note():
     try:
         return {
-            "name": fake.name().split()[0],
+            "name": fake.word().capitalize(),
             "tag": fake.word().lower(),
             "content": fake.text(max_nb_chars=300)
         }

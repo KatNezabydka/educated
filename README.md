@@ -51,7 +51,7 @@ This chat bot provides functionality to manage an address book. It offers the fo
 - `add-address [name] [address]`: Adds an address for the specified contact.
 - `add-email [name] [email]`: Adds an email address for the specified contact.
 - `edit-phone [name] [new phone]`: Changes the phone number for the specified contact.
-- `find-phone [name]`: Shows the phone number for the specified contact.
+- `show-phone [name]`: Shows the phone number for the specified contact.
 - `find-contact: [name]` show all information about person
 - `show_contacts`: Shows all contacts in the address book.
 - `add-birthday [name] [birthday]`: Adds a birthday for the specified contact.
@@ -64,7 +64,7 @@ This chat bot provides functionality to manage an address book. It offers the fo
 - `delete-note [note_name]`: Deletes the note with the specified name.
 - `show-note [note_name]`: Shows the note with the specified name.
 - `show-all-notes`: Shows all notes, sorted by name.
-- `show-notes-tag [tag]`: Shows notes with the specified tag.
+- `find-notes-by-tag [tag]`: Shows notes with the specified tag.
 - `show-all-notes-tag`: Shows all notes, sorted by tags.
 - `close` or `exit`: Closes the program, saving data before exiting.
 

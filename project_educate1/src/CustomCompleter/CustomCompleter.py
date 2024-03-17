@@ -20,7 +20,7 @@ class CustomCompleter(Completer):
             "add-address",
             "add-email",
             "edit-phone",
-            "find-phone",
+            "show-phone",
             "find-contact",
             "show-contacts",
             "add-birthday",
@@ -33,7 +33,7 @@ class CustomCompleter(Completer):
             "delete-note",
             "show-note",
             "show-all-notes",
-            "show-notes-tag",
+            "find-notes-by-tag",
             "show-all-notes-tag",
             "exit",
             "close"
