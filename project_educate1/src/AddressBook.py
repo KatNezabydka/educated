@@ -33,7 +33,7 @@ class AddressBook(UserDict):
 
     def get_birthdays_per_week(self) -> dict:
         today = datetime.now()
-        start_day = today + timedelta(days=1)
+        start_day = today + timedelta(days=0)
         end_day = start_day + timedelta(days=7)
 
         birth_week = {
