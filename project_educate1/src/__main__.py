@@ -3,14 +3,14 @@ from colorama import init, Fore, Style, Back
 from prompt_toolkit import prompt
 from datetime import datetime, timedelta
 
-from educated.src.AddressBook import AddressBook
-from educated.src.ValidationError import ValidationError
-from educated.src.NoteBook import NoteBook
-from educated.src.Faker.user_management import load_or_generate_users, save_users
-from educated.src.Faker.note_management import load_or_generate_notes, save_notes
-from educated.src.CustomCompleter.CustomCompleter import CustomCompleter, custom_style
-from educated.src.Note import Note
-from educated.src.Record import Record
+from project_educate1.src.AddressBook import AddressBook
+from project_educate1.src.ValidationError import ValidationError
+from project_educate1.src.NoteBook import NoteBook
+from project_educate1.src.Faker.user_management import load_or_generate_users, save_users
+from project_educate1.src.Faker.note_management import load_or_generate_notes, save_notes
+from project_educate1.src.CustomCompleter.CustomCompleter import CustomCompleter, custom_style
+from project_educate1.src.Note import Note
+from project_educate1.src.Record import Record
 
 completer = CustomCompleter()
 
