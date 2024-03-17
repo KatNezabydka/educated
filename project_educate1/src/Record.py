@@ -115,4 +115,4 @@ class Record:
         return self.birthday is not None
 
     def __str__(self):
-        return f"Contact name: {self.name.value}, {self.print_birthday()} {self.print_phones()} {self.print_addresses()}"
+        return f"Contact name: {self.name.value}, {self.print_birthday()} {self.print_phones()} {self.print_addresses()} {self.print_emails()}"
