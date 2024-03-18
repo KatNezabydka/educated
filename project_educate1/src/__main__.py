@@ -43,10 +43,10 @@ def input_error(func):
         try:
             return func(*args, **kwargs)
         except ValidationError as e:
-            return str(e)
+            return Fore.RED + str(e)
         except Exception as e:
             if not callable(e):
-                return str(e)
+                return Fore.RED + str(e)
             else:
                 raise e
 
@@ -122,8 +122,8 @@ def add_contact(args: list, book: AddressBook) -> str:
 
     if book.find(name) is None:
         book.add_record(Record(name).add_phone(phone))
-        return f"{Fore.GREEN} ✅ Contact added."
-    return f"{Fore.YELLOW} Contact already exist."
+        return f"{Fore.GREEN}✅ Contact added."
+    return f"{Fore.RED}Contact already exist."
 
 
 @input_error
@@ -155,8 +155,8 @@ def add_email(args: list, book: AddressBook) -> str:
     if record and record.has_email() is False:
         record.add_email(email)
         book.add_record(record)
-        return f"{Fore.GREEN} ✅ Email added."
-    return f"{Fore.YELLOW} The contact does not exist, or already has email."
+        return f"{Fore.GREEN}✅ Email added."
+    return f"{Fore.RED}The contact does not exist, or already has email."
 
 
 @input_error
@@ -188,8 +188,8 @@ def add_address(args: list, book: AddressBook) -> str:
     if record and record.has_address() is False:
         record.add_address(address)
         book.add_record(record)
-        return f"{Fore.GREEN} ✅ Address added."
-    return f"{Fore.YELLOW} The contact does not exist, or already has address."
+        return f"{Fore.GREEN}✅ Address added."
+    return f"{Fore.RED}The contact does not exist, or already has address."
 
 
 @input_error
@@ -220,8 +220,8 @@ def change_contact(args: list, book: AddressBook) -> str:
     contact = book.find(name)
     if contact is not None:
         contact.delete_phones().add_phone(phone)
-        return f"{Fore.GREEN} Contact updated."
-    return f"{Fore.RED} Contact not found."
+        return f"{Fore.GREEN}Contact updated."
+    return f"{Fore.RED}Contact not found."
 
 
 @input_error
@@ -248,7 +248,7 @@ def show_phone(args: list, book: AddressBook) -> str:
     contact = book.find(name)
     if contact is not None:
         return contact.print_phones()
-    return f"{Fore.RED} Contact not found."
+    return f"{Fore.RED}Contact not found."
 
 
 @input_error
@@ -269,7 +269,7 @@ def find_contact(args: list, book: AddressBook) -> Record | str:
     record = book.find(name)
     if record:
         return record
-    return f"{Fore.YELLOW} The contact does not exist, use the 'add-contact' command to create it."
+    return f"{Fore.RED}The contact does not exist, use the 'add-contact' command to create it."
 
 
 def show_all(book: AddressBook) -> print:
@@ -324,11 +324,11 @@ def add_birthday(args: list, book: AddressBook) -> str:
     record = book.find(name)
     if record is not None:
         if record.has_birthday():
-            return f"{Fore.YELLOW} Birthday already exists for this contact."
+            return f"{Fore.YELLOW}Birthday already exists for this contact."
         else:
             record.add_birthday(birthday)
-            return f"{Fore.GREEN} ✅ Birthday added."
-    return f"{Fore.YELLOW} Contact not found."
+            return f"{Fore.GREEN}✅ Birthday added."
+    return f"{Fore.RED}Contact not found."
 
 
 @input_error
@@ -357,8 +357,8 @@ def show_birthday(args: list, book: AddressBook) -> str:
         if record.has_birthday():
             return record.print_birthday()
         else:
-            return f"{Fore.YELLOW} Birthday is empty for this contact."
-    return f"{Fore.YELLOW} Contact not found."
+            return f"{Fore.RED}Birthday is empty for this contact."
+    return f"{Fore.RED}Contact not found."
 
 
 @input_error
@@ -476,8 +476,8 @@ def add_note(args: list, note_book: NoteBook) -> str:
     content = " ".join(args[2:])
     if note_book.find(name) is None:
         note_book.add_note(Note(name, tag, content))
-        return f"{Fore.GREEN} ✅ Note added."
-    return f"{Fore.YELLOW}Note with the same name already exists."
+        return f"{Fore.GREEN}✅ Note added."
+    return f"{Fore.RED}Note with the same name already exists."
 
 
 @input_error
