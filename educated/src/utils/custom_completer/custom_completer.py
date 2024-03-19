@@ -36,7 +36,7 @@ class CustomCompleter(Completer):
             "find-notes-by-tag",
             "show-all-notes-tag",
             "exit",
-            "close"
+            "close",
         ]
 
     def get_completions(self, document, complete_event):

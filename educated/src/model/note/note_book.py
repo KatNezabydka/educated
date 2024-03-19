@@ -1,7 +1,7 @@
 from collections import UserDict
 
-from project_educate1.src.Note import Note
-from project_educate1.src.ValidationError import ValidationError
+from educated.src.model.note.note import Note
+from educated.src.model.validation.validation_error import ValidationError
 
 
 class NoteBook(UserDict):
