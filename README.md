@@ -12,7 +12,7 @@ Console bot assistant
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/KatNezabydka/project-educate1.git
+   git clone https://github.com/KatNezabydka/educated.git
    ```
 
 2. Install the package:
@@ -43,7 +43,7 @@ Console bot assistant
 
 ### Introduction
 
-This chat bot provides functionality to manage an address book. It offers the following commands:
+This chatbot provides functionality to manage an address book. It offers the following commands:
 
 - `help`: Calls the `show_help()` function, which displays usage help for the program.
 - `hello`: Prints a greeting message.
@@ -68,7 +68,7 @@ This chat bot provides functionality to manage an address book. It offers the fo
 - `show-all-notes-tag`: Shows all notes, sorted by tags.
 - `close` or `exit`: Closes the program, saving data before exiting.
 
-The chat bot supports color highlighting for commands and error messages for user convenience.
+The chatbot supports color highlighting for commands and error messages for user convenience.
 
 ## Authors
 
