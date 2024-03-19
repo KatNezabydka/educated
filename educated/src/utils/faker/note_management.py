@@ -10,7 +10,7 @@ def generate_fake_note():
         return {
             "name": fake.word().capitalize(),
             "tag": fake.word().lower(),
-            "content": fake.text(max_nb_chars=300)
+            "content": fake.text(max_nb_chars=300),
         }
     except Exception as e:
         print(f"Error generating fake note: {e}")

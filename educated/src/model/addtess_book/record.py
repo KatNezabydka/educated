@@ -1,8 +1,8 @@
-from project_educate1.src.Address import Address
-from project_educate1.src.Email import Email
-from project_educate1.src.Name import Name
-from project_educate1.src.Phone import Phone
-from project_educate1.src.Birthday import Birthday
+from educated.src.model.contact.address import Address
+from educated.src.model.contact.email import Email
+from educated.src.model.contact.name import Name
+from educated.src.model.contact.phone import Phone
+from educated.src.model.contact.birthday import Birthday
 
 
 class Record:
@@ -33,7 +33,7 @@ class Record:
         self.addresses.append(Address(address))
 
         return self
-    
+
     def has_address(self) -> bool:
         return len(self.addresses) > 0
 
@@ -95,9 +95,7 @@ class Record:
         if not self.addresses:
             return ""
         else:
-            return (
-                f"🏘 addres: {'; '.join(address.value for address in self.addresses)}"
-            )
+            return f"🏘 addres: {'; '.join(address.value for address in self.addresses)}"
 
     def print_birthday(self) -> str:
         if self.has_birthday():

@@ -1,7 +1,8 @@
 from collections import UserDict
 from datetime import datetime, timedelta
 
-from project_educate1.src.Record import Record
+from educated.src.model.addtess_book.record import Record
+
 
 class AddressBook(UserDict):
     def add_record(self, record: Record) -> None:
@@ -25,8 +26,16 @@ class AddressBook(UserDict):
                         if record.birthday
                         else None
                     ),
-                    "email": record.emails[0].value if record.emails and record.emails[0].value else None,
-                    "address": record.addresses[0].value if record.addresses and record.addresses[0].value else None,
+                    "email": (
+                        record.emails[0].value
+                        if record.emails and record.emails[0].value
+                        else None
+                    ),
+                    "address": (
+                        record.addresses[0].value
+                        if record.addresses and record.addresses[0].value
+                        else None
+                    ),
                 }
             )
         return existing_data
